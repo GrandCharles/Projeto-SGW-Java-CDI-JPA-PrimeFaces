@@ -1,0 +1,62 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{cadastroGrupoUsuarioBean.editando ? 'Edição de Grupos de Usuário' : 'Novo Grupo de Usuário'}</ui:define>
+ 
+	<ui:define name="corpo">
+		<!-- Antes da pagina ser reinderizada chame o método -->
+		<f:metadata>
+			<o:viewParam name="nGrupoUsuario" value="#{cadastroGrupoUsuarioBean.grupoUsuarioTO}"/> 
+			<f:event listener="#{cadastroGrupoUsuarioBean.inicializar}" type="preRenderView" />
+		</f:metadata>
+	
+		<h:form>
+	    	<h1>#{cadastroGrupoUsuarioBean.editando ? 'Edição de Grupo de Usuário' : 'Novo Grupo Usuário'}</h1>
+			
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/usuarios/CadastroGrupoUsuario" />
+
+					<p:commandButton value="Salvar" 
+					                 id="botaoSalvar" 
+					                 action="#{cadastroGrupoUsuarioBean.salvar}"
+					                 update="@form"/>
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/usuarios/PesquisaGrupoUsuario" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+  				         style="width: 100%; 
+  				         margin-top: 20px" 
+  				         columnClasses="rotulo, campo">
+
+				<p:outputLabel value="Nome" for="idNome" />
+				<p:inputText id="idNome" 
+				             size="50" 
+				             maxlength="40" 
+				             value="#{cadastroGrupoUsuarioBean.grupoUsuarioTO.nome}"/>
+
+
+				<p:outputLabel value="Descrição" for="idDesc" />
+				<p:inputText id="idDesc" 
+				             size="50" 
+				             maxlength="40" 
+				             value="#{cadastroGrupoUsuarioBean.grupoUsuarioTO.descricao}"/>
+
+			</p:panelGrid>
+			
+		</h:form>
+		
+	</ui:define>
+	
+</ui:composition>

@@ -1,0 +1,115 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de produtos</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="idForm">
+	    	<h1>Pesquisa de produtos</h1>
+	    	
+	 		<p:messages autoUpdate="true" closable="true"  />
+	    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Pesquisar" 
+	    			                 action="#{pesquisaProdutosBean.pesquisar}"
+	    			                 update="@form"/>
+	    		</p:toolbarGroup>
+	    		
+	    		<p:toolbarGroup align="right">
+	    			<p:button value="Novo" outcome="/produtos/CadastroProduto" />
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:panelGrid columns="2" id="painel" 
+	    	             style="width: 100%; 
+	    	             margin-top: 20px"
+	    			     columnClasses="rotulo, campo">
+	    			     
+	    		<p:outputLabel value="SKU" for="idSku"/>
+				<p:inputText id="idSku" 
+				             size="8" 
+				             maxlength="8" 
+				             value="#{pesquisaProdutosBean.filter.sku}"/>	   
+				             
+				              		
+	    		<p:outputLabel value="Descrição" for="idDesc"/>
+				<p:inputText id="idDesc" 
+				             size="50" 
+				             maxlength="40" 
+				             value="#{pesquisaProdutosBean.filter.descricao}"/>
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="idProdutosTable" 
+	    				 value="#{pesquisaProdutosBean.lstProdutosFiltrados}" 
+	    				 var="vProduto"
+	    				 style="margin-top: 20px" 
+	    				 emptyMessage="Nenhum produto encontrado." 
+	    				 rows="5"
+	    		         paginator="true" 
+	    		         paginatorAlwaysVisible="false" 
+	    		         paginatorPosition="bottom">
+	    		
+	    		<p:column headerText="SKU" style="text-align: center; width: 100px">
+	    			<h:outputText value="#{vProduto.sku}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Descrição" style="text-align: left; width: 100px">
+	    			<h:outputText value="#{vProduto.descricao}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Categoria" style="text-align: left; width: 250px">
+	    			<h:outputText value="#{vProduto.categoriaTO.categoriaPai.descricao} - #{vProduto.categoriaTO.descricao}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Valor unitário" style="text-align: right; width: 120px">
+	    			<h:outputText value="#{vProduto.vlrUnitario}" >
+	    				<f:convertNumber type="currency"/>
+	    			</h:outputText>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Estoque" style="text-align: right; width: 100px">
+	    			<h:outputText value="#{vProduto.qtdeEstoque}" />
+	    		</p:column>
+	    		
+	    		<p:column style="width: 100px; text-align: center">
+	    			<p:button icon="ui-icon-pencil" 
+	    			          title="Editar" 
+	    			          outcome="/produtos/CadastroProduto">
+	    				<f:param name="nProduto" value="#{vProduto.id}"/>          
+	    			</p:button>
+	    			
+					<p:commandButton icon="ui-icon-trash" 
+					                 title="Excluir" 
+					                 process="@this"
+					                 update=":idForm:idDialog"
+					                 oncomplete="PF('confirmacaoExclusao').show()">
+						<f:setPropertyActionListener target="#{pesquisaProdutosBean.produtoSelecionado}" 
+						                             value="#{vProduto}" />
+
+					 </p:commandButton>
+				</p:column>
+	    		
+	    	</p:dataTable>
+	    	
+			<p:confirmDialog id="idDialog" 
+			                 header="Exclusão de produto" 
+			                 message="Tem certeza que deseja excluir o produto #{pesquisaProdutosBean.produtoSelecionado.sku}?"
+	    		             widgetVar="confirmacaoExclusao">
+	    		             
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    		
+	    		<p:commandButton value="Sim" 
+	    		                 oncomplete="PF('confirmacaoExclusao').hide();" 
+	    		                 action="#{pesquisaProdutosBean.excluir}"
+	    		                 process="@this"
+	    		                 update=":idForm:idProdutosTable" />
+	    	</p:confirmDialog>
+	   	</h:form>
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,102 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de usuários</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="idForm">
+	    	<h1>Pesquisa de usuários</h1>
+
+	 		<p:messages autoUpdate="true" closable="true"  />
+	    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Pesquisar" 
+	    			                 action="#{pesquisaUsuarioBean.pesquisar}"
+	    			                 update="@form"/>
+	    		</p:toolbarGroup>
+	    		
+	    		<p:toolbarGroup align="right">
+	    			<p:button value="Novo" outcome="/usuarios/CadastroUsuario" />
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:panelGrid columns="2" 
+	    	             id="painel" 
+	    	             style="width: 100%; 
+	    	             margin-top: 20px"
+	    			     columnClasses="rotulo, campo">
+	    			     
+	    		<p:outputLabel value="Nome" for="idNome" />
+    			<p:inputText id="idNome" 
+    			             size="50" 
+    			             maxlength="40"
+    			             value="#{pesquisaUsuarioBean.filter.nome}" />
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="idUsuarioTable" 
+	    			 	 value="#{pesquisaUsuarioBean.lstUsuarioFiltrado}" 
+	    			 	 var="vUsuario"
+	    		         style="margin-top: 20px" 
+	    		         emptyMessage="Nenhum Usuário encontrado."
+	    		         rows="5" 
+	    		         paginator="true" 
+	    		         paginatorAlwaysVisible="false" 
+	    		         paginatorPosition="bottom">
+	    	
+	    		<p:column headerText="Nome" style="text-align: left; width: 170px">
+	    			<h:outputText value="#{vUsuario.nome}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="E-Mail" style="text-align: left; width: 170px">
+	    			<h:outputText value="#{vUsuario.email}"/>
+	    		</p:column>
+
+	    		<p:column headerText="Grupo" style="text-align: left; width: 250px">
+	    			<h:outputText value="#{vUsuario.lstGrupoUsuario}"/>
+	    		</p:column>
+
+	    		
+	    		<p:column style="width: 30px; text-align: center">
+	    			<p:button icon="ui-icon-pencil" 
+	    			          title="Editar" 
+	    			          outcome="/usuarios/CadastroUsuario">
+	    				<f:param name="nUsuario" value="#{vUsuario.id}"/>          
+	    			</p:button>
+	    			
+					<p:commandButton icon="ui-icon-trash" 
+					                 title="Excluir" 
+					                 process="@this"
+					                 update=":idForm:idDialog"
+					                 oncomplete="PF('confirmacaoExclusao').show()">
+						<f:setPropertyActionListener target="#{pesquisaUsuarioBean.usuarioSelecionado}" 
+						                             value="#{vUsuario}" />
+
+					 </p:commandButton>
+				</p:column>
+
+	    	</p:dataTable>
+
+			<p:confirmDialog id="idDialog" 
+			                 header="Exclusão de usuário" 
+			                 message="Tem certeza que deseja excluir o usuário #{pesquisaUsuariosBean.usuarioSelecionado.nome}?"
+	    		             widgetVar="confirmacaoExclusao">
+	    		             
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    		
+	    		<p:commandButton value="Sim" 
+	    		                 oncomplete="PF('confirmacaoExclusao').hide();" 
+	    		                 action="#{pesquisaUsuarioBean.excluir}"
+	    		                 process="@this"
+	    		                 update=":idForm:idUsuarioTable" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,105 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulSo">Pesquisa de Grupos de Usuários</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="idForm">
+	    	<h1>Pesquisa de Grupos de Usuários</h1>
+
+	 		<p:messages autoUpdate="true" closable="true"  />
+	    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Pesquisar" 
+	    			                 action="#{pesquisaGrupoUsuarioBean.pesquisar}"
+	    			                 update="@form"/>
+	    		</p:toolbarGroup>
+	    		
+	    		<p:toolbarGroup align="right">
+	    			<p:button value="Novo" outcome="/usuarios/CadastroGrupoUsuario" />
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:panelGrid columns="2" 
+	    	             id="painel" 
+	    	             style="width: 100%; 
+	    	             margin-top: 20px"
+	    			     columnClasses="rotulo, campo">
+	    			     
+	    		<p:outputLabel value="Nome" for="idNome" />
+    			<p:inputText id="idNome" 
+    			             size="50" 
+    			             maxlength="40" 
+    			             value="#{pesquisaGrupoUsuarioBean.filter.nome}"/>
+    			             
+    			             
+	    		<p:outputLabel value="Descrição" for="idDesc" />
+    			<p:inputText id="idDesc" 
+    			             size="50" 
+    			             maxlength="40"
+    			             value="#{pesquisaGrupoUsuarioBean.filter.descricao}"/>
+	    	
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="idGrupoUsuarioTable" 
+	    			 	 value="#{pesquisaGrupoUsuarioBean.lstGrupoUsuarioFiltrado}" 
+	    			 	 var="vGrupoUsuario"
+	    		         style="margin-top: 20px" 
+	    		         emptyMessage="Nenhum Grupo de Usuário encontrado."
+	    		         rows="5" 
+	    		         paginator="true" 
+	    		         paginatorAlwaysVisible="false" 
+	    		         paginatorPosition="bottom">
+	    	
+	    		<p:column headerText="Nome" style="text-align: left; width: 200px">
+	    			<h:outputText value="#{vGrupoUsuario.nome}"/>
+	    		</p:column>
+
+	    		<p:column headerText="Descrição" style="text-align: left; width: 200px">
+	    			<h:outputText value="#{vGrupoUsuario.descricao}"/>
+	    		</p:column>
+	    		
+	    		<p:column style="width: 20px; text-align: center">
+	    			<p:button icon="ui-icon-pencil" 
+	    			          title="Editar" 
+	    			          outcome="/usuarios/CadastroGrupoUsuario">
+	    				<f:param name="nGrupoUsuario" value="#{vGrupoUsuario.id}"/>          
+	    			</p:button>
+	    			
+					<p:commandButton icon="ui-icon-trash" 
+					                 title="Excluir" 
+					                 process="@this"
+					                 update=":idForm:idDialog"
+					                 oncomplete="PF('confirmacaoExclusao').show()">
+						<f:setPropertyActionListener target="#{pesquisaGrupoUsuarioBean.grupoUsuarioSelecionado}" 
+						                             value="#{vGrupoUsuario}" />
+
+					 </p:commandButton>
+				</p:column>
+
+	    	</p:dataTable>
+
+			<p:confirmDialog id="idDialog" 
+			                 header="Exclusão de Grupos de Usuário" 
+			                 message="Tem certeza que deseja excluir o Grupo de Usuário #{pesquisaGrupoUsuarioBean.grupoUsuarioSelecionado.nome}?"
+	    		             widgetVar="confirmacaoExclusao">
+	    		             
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    		
+	    		<p:commandButton value="Sim" 
+	    		                 oncomplete="PF('confirmacaoExclusao').hide();" 
+	    		                 action="#{pesquisaGrupoUsuarioBean.excluir}"
+	    		                 process="@this"
+	    		                 update=":idForm:idGrupoUsuarioTable" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+
+    </ui:define>
+
+</ui:composition>

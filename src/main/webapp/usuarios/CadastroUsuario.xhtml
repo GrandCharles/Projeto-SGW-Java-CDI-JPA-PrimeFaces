@@ -1,0 +1,94 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{cadastroUsuarioBean.editando ? 'Edição de usuário' : 'Novo usuário'}</ui:define>
+ 
+	<ui:define name="corpo">
+		<!-- Antes da pagina ser reinderizada chame o método -->
+		<f:metadata>
+			<o:viewParam name="nUsuario" value="#{cadastroUsuarioBean.usuarioTO}"/> 
+			<f:event listener="#{cadastroUsuarioBean.inicializar}" type="preRenderView" />
+		</f:metadata>
+	
+		<h:form>
+	    	<h1>#{cadastroUsuarioBean.editando ? 'Edição de usuário' : 'Novo usuário'}</h1>
+			
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/usuarios/CadastroUsuario" />
+
+					<p:commandButton value="Salvar" 
+					                 id="botaoSalvar" 
+					                 action="#{cadastroUsuarioBean.salvar}"
+					                 update="@form"/>
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/usuarios/PesquisaUsuario" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid id="painel"
+			             columns="2" 
+  				         style="width: 100%; 
+  				         margin-top: 20px" 
+  				         columnClasses="rotulo, campo">
+
+				<p:outputLabel value="Nome" for="idNome" />
+				<p:inputText id="idNome" 
+				             size="40" 
+				             maxlength="30" 
+				             value="#{cadastroUsuarioBean.usuarioTO.nome}"/>
+
+
+				<p:outputLabel value="E-Mail" for="idEmail" />
+				<p:inputText id="idEmail" 
+				             size="60" 
+				             maxlength="50" 
+				             value="#{cadastroUsuarioBean.usuarioTO.email}"/>
+
+
+				<p:outputLabel value="Senha" for="idSenha" />
+				<p:password id="idSenha"
+				             size="40" 
+				             maxlength="20"
+				             feedback="true"
+				             promptLabel="Informe uma senha"
+				             weakLabel="Fraca"
+				             goodLabel="Média"
+				             strongLabel="Forte"
+				             match="idSenha2" 
+				             value="#{cadastroUsuarioBean.usuarioTO.senha}"/>
+
+				<p:outputLabel value="Confirma a senha" for="idSenha2" />
+				<p:password id="idSenha2"
+				             size="40" 
+				             maxlength="20"
+				             required="true"/>
+
+
+				<p:outputLabel value="Grupo"  />
+				<!-- 
+				<p:outputLabel value="Grupo" for="idGrupo" />
+				<p:selectOneMenu id="idGrupo" 
+				                 value="#{cadastroUsuarioBean.usuarioGrupoUsuarioTO.grupoUsuarioTO}">
+
+					<f:selectItem itemLabel="Selecione o grupo" />
+					<f:selectItems value="#{cadastroUsuarioBean.lstGrupoUsuario}"
+					               var="grupoUsuarioTO"
+					               itemValue="#{grupoUsuarioTO}"
+					               itemLabel="#{grupoUsuarioTO.nome}"/>
+				</p:selectOneMenu>
+				 -->
+				 
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
