@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.grandcharles.sgw.model.cliente.ClienteTO;
-import br.com.grandcharles.sgw.repository.ClienteRepository;
-import br.com.grandcharles.sgw.service.ClienteService;
+import br.com.grandcharles.sgw.repository.cliente.ClienteRepository;
+import br.com.grandcharles.sgw.service.cliente.ClienteService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named

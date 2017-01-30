@@ -16,7 +16,7 @@
 	    	<p:toolbar style="margin-top: 20px">
 	    		<p:toolbarGroup>
 	    			<p:commandButton value="Pesquisar" 
-	    			                 action="#{pesquisaProdutosBean.pesquisar}"
+	    			                 action="#{pesquisaProdutosBean.pesquisarFiltro}"
 	    			                 update="@form"/>
 	    		</p:toolbarGroup>
 	    		
@@ -54,29 +54,29 @@
 	    		         paginatorAlwaysVisible="false" 
 	    		         paginatorPosition="bottom">
 	    		
-	    		<p:column headerText="SKU" style="text-align: center; width: 100px">
+	    		<p:column headerText="SKU" style="text-align: center; width: 08%">
 	    			<h:outputText value="#{vProduto.sku}" />
 	    		</p:column>
 	    		
-	    		<p:column headerText="Descrição" style="text-align: left; width: 100px">
+	    		<p:column headerText="Descrição" style="text-align: left; width: 35%">
 	    			<h:outputText value="#{vProduto.descricao}" />
 	    		</p:column>
 	    		
-	    		<p:column headerText="Categoria" style="text-align: left; width: 250px">
+	    		<p:column headerText="Categoria" style="text-align: left; width: 30%">
 	    			<h:outputText value="#{vProduto.categoriaTO.categoriaPai.descricao} - #{vProduto.categoriaTO.descricao}"/>
 	    		</p:column>
 	    		
-	    		<p:column headerText="Valor unitário" style="text-align: right; width: 120px">
+	    		<p:column headerText="Valor unitário" style="text-align: right; width: 10%">
 	    			<h:outputText value="#{vProduto.vlrUnitario}" >
 	    				<f:convertNumber type="currency"/>
 	    			</h:outputText>
 	    		</p:column>
 	    		
-	    		<p:column headerText="Estoque" style="text-align: right; width: 100px">
+	    		<p:column headerText="Estoque" style="text-align: right; width: 10%">
 	    			<h:outputText value="#{vProduto.qtdeEstoque}" />
 	    		</p:column>
 	    		
-	    		<p:column style="width: 100px; text-align: center">
+	    		<p:column style="text-align: center; width: 07%">
 	    			<p:button icon="ui-icon-pencil" 
 	    			          title="Editar" 
 	    			          outcome="/produtos/CadastroProduto">

@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import br.com.grandcharles.sgw.filter.ProdutoFilter;
 import br.com.grandcharles.sgw.model.produto.ProdutoTO;
-import br.com.grandcharles.sgw.repository.ProdutosRepository;
+import br.com.grandcharles.sgw.repository.produto.ProdutoRepository;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -19,7 +19,7 @@ public class PesquisaProdutosBean  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private ProdutosRepository repository;
+	private ProdutoRepository repository;
 	
 	private ProdutoTO produtoSelecionado;
 	
@@ -34,8 +34,8 @@ public class PesquisaProdutosBean  implements Serializable {
 	}
 	
 	
-	public void pesquisar(){
-		lstProdutosFiltrados = repository.pesquisa(filter);
+	public void pesquisarFiltro(){
+		lstProdutosFiltrados = repository.pesquisaFiltro(filter);
 	}
 	
 	public void excluir(){

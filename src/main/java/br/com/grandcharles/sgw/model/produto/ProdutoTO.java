@@ -17,10 +17,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import br.com.grandcharles.sgw.service.NegocioException;
 import br.com.grandcharles.sgw.validation.SKU;
 
 @Entity
-@Table(name="tbproduto")
+@Table(name="tbProduto")
 public class ProdutoTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +31,8 @@ public class ProdutoTO implements Serializable{
 	private Long id;
 
 	/* @SKU Validation SKU*/
-	@NotBlank @SKU
+	@SKU
+	@NotBlank 
 	@Size(max=8)
 	@Column(name="strSku", length=10, nullable=false, unique=true)
 	private String sku;
@@ -56,6 +58,26 @@ public class ProdutoTO implements Serializable{
 	private CategoriaTO categoriaTO;
 
 	
+	
+	/* ===========================================================================================*/
+	public void baixarItemEstoque(Integer quantidade) {
+		int qtde = this.getQtdeEstoque() - quantidade;
+		
+		if (qtde < 0){
+			throw new NegocioException("Não há disponibilidade no estoque de "
+					                   + quantidade + " itens do produto " + this.getSku());
+		}
+		this.setQtdeEstoque(qtde);
+	}
+
+	public void adicionarItemEstoque(Integer quantidade) {
+		int qtde = this.getQtdeEstoque() + quantidade;
+
+		this.setQtdeEstoque(qtde);
+	}
+	
+	/* ===========================================================================================*/
+	
 	public Long getId() {
 		return id;
 	}
@@ -67,7 +89,7 @@ public class ProdutoTO implements Serializable{
 		return sku;
 	}
 	public void setSku(String sku) {
-		this.sku = sku;
+		this.sku = sku == null ? null : sku.toUpperCase();
 	}
 	
 	public String getDescricao() {
@@ -123,7 +145,6 @@ public class ProdutoTO implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	 
+
+ 
 }

@@ -41,6 +41,12 @@
   				         margin-top: 20px" 
   				         columnClasses="rotulo, campo">
 
+				<p:outputLabel value="Login" for="idLogin" />
+				<p:inputText id="idLogin" 
+				             size="30" 
+				             maxlength="20" 
+				             value="#{cadastroUsuarioBean.usuarioTO.login}"/>
+
 				<p:outputLabel value="Nome" for="idNome" />
 				<p:inputText id="idNome" 
 				             size="40" 
@@ -48,45 +54,50 @@
 				             value="#{cadastroUsuarioBean.usuarioTO.nome}"/>
 
 
-				<p:outputLabel value="E-Mail" for="idEmail" />
+				<p:outputLabel value="E-Mail" for="idEmail"/>
 				<p:inputText id="idEmail" 
 				             size="60" 
 				             maxlength="50" 
 				             value="#{cadastroUsuarioBean.usuarioTO.email}"/>
 
 
-				<p:outputLabel value="Senha" for="idSenha" />
-				<p:password id="idSenha"
-				             size="40" 
-				             maxlength="20"
-				             feedback="true"
-				             promptLabel="Informe uma senha"
-				             weakLabel="Fraca"
-				             goodLabel="Média"
-				             strongLabel="Forte"
-				             match="idSenha2" 
+				<p:outputLabel value="Senha" for="idSenha"/>
+				<p:inputText id="idSenha" 
+				             size="30" 
+				             maxlength="20" 
 				             value="#{cadastroUsuarioBean.usuarioTO.senha}"/>
+				
 
-				<p:outputLabel value="Confirma a senha" for="idSenha2" />
-				<p:password id="idSenha2"
-				             size="40" 
-				             maxlength="20"
-				             required="true"/>
-
-
-				<p:outputLabel value="Grupo"  />
-				<!-- 
-				<p:outputLabel value="Grupo" for="idGrupo" />
+				<p:outputLabel value="Grupo" for="idGrupo"/>
 				<p:selectOneMenu id="idGrupo" 
-				                 value="#{cadastroUsuarioBean.usuarioGrupoUsuarioTO.grupoUsuarioTO}">
-
+				                 value="#{cadastroUsuarioBean.grupoUsuarioTO}">
 					<f:selectItem itemLabel="Selecione o grupo" />
 					<f:selectItems value="#{cadastroUsuarioBean.lstGrupoUsuario}"
 					               var="grupoUsuarioTO"
 					               itemValue="#{grupoUsuarioTO}"
 					               itemLabel="#{grupoUsuarioTO.nome}"/>
 				</p:selectOneMenu>
-				 -->
+
+				<!-- 
+				<p:password id="idSenha"
+				            size="40" 
+				            maxlength="20"
+				            feedback="true"
+				            promptLabel="Informe uma senha"
+				            weakLabel="Fraca"
+				            goodLabel="Média"
+				            strongLabel="Forte"
+				            match="idSenha2" 
+				            value="#{cadastroUsuarioBean.usuarioTO.senha}"/>
+
+				<p:outputLabel value="Confirma a senha" for="idSenha2" />
+				<p:password id="idSenha2"
+				             size="40" 
+				             maxlength="20"
+				             required="true"/>
+ 				-->
+
+
 				 
 			</p:panelGrid>
 		</h:form>

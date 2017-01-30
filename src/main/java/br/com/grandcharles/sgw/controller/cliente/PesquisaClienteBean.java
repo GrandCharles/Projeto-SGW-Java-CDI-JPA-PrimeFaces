@@ -9,7 +9,7 @@ import javax.inject.Named;
 
 import br.com.grandcharles.sgw.filter.ClienteFilter;
 import br.com.grandcharles.sgw.model.cliente.ClienteTO;
-import br.com.grandcharles.sgw.repository.ClienteRepository;
+import br.com.grandcharles.sgw.repository.cliente.ClienteRepository;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -32,8 +32,8 @@ public class PesquisaClienteBean  implements Serializable {
 	}
 	
 	
-	public void pesquisar(){
-		lstClienteFiltrado = repository.pesquisa(filter);
+	public void pesquisarFiltro(){
+		lstClienteFiltrado = repository.pesquisaFiltro(filter);
 	}
 	
 	public void excluir(){

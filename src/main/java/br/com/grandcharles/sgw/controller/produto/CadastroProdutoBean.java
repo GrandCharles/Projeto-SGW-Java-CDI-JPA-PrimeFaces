@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import br.com.grandcharles.sgw.model.produto.CategoriaTO;
 import br.com.grandcharles.sgw.model.produto.ProdutoTO;
-import br.com.grandcharles.sgw.repository.CategoriasRepository;
-import br.com.grandcharles.sgw.service.ProdutoService;
+import br.com.grandcharles.sgw.repository.produto.CategoriasRepository;
+import br.com.grandcharles.sgw.service.produto.ProdutoService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -28,6 +28,7 @@ public class CadastroProdutoBean implements Serializable{
 	
 	private ProdutoTO produtoTO;
 	
+	@NotNull
 	private CategoriaTO categoriaPai;
 
 	private List<CategoriaTO> lstCategoriasPai;
@@ -38,6 +39,13 @@ public class CadastroProdutoBean implements Serializable{
 		limpar();
 	}
 	
+	
+	private void limpar(){
+		produtoTO = new ProdutoTO();
+		categoriaPai = null;
+		lstSubCategorias = new ArrayList<>();
+	}
+
 	
 	public void inicializar(){
 		if (FacesUtil.isNotPostback()){
@@ -62,13 +70,6 @@ public class CadastroProdutoBean implements Serializable{
 		FacesUtil.addInfoMessage("Produto salvo com sucesso");
 	}
 
-
-	private void limpar(){
-		produtoTO = new ProdutoTO();
-		categoriaPai = null;
-		lstSubCategorias = new ArrayList<>();
-	}
-
 	
 	public boolean isEditando() {
 		return this.produtoTO.getId() != null;
@@ -87,7 +88,6 @@ public class CadastroProdutoBean implements Serializable{
 	}
 
 
-	@NotNull
 	public CategoriaTO getCategoriaPai() {
 		return categoriaPai;
 	}

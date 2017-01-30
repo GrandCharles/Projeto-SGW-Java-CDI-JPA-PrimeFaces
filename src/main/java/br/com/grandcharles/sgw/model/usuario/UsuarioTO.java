@@ -2,7 +2,6 @@ package br.com.grandcharles.sgw.model.usuario;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,6 +29,11 @@ public class UsuarioTO implements Serializable{
 	private Long id;
 
 	@NotBlank
+	@Size(max=20)
+	@Column(name="strLogin", length=20, nullable=false)
+	private String login;
+
+	@NotBlank
 	@Size(max=30)
 	@Column(name="strNome", length=30, nullable=false)
 	private String nome;
@@ -43,15 +47,13 @@ public class UsuarioTO implements Serializable{
 	@Size(max=20)
 	@Column(name="strSenha", length=20, nullable=false)
 	private String senha;
-
-
-	@NotNull
+	
+	//@NotNull
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="dpusuariogrupo", 
-	           joinColumns={@JoinColumn(name="idUsuario")},
-	           inverseJoinColumns={@JoinColumn(name="idGrupoUsuario")})
-	private List<GrupoUsuarioTO> lstGrupoUsuario;
-		
+	@JoinTable(name = "dpusuariogrupo", 
+	           joinColumns = @JoinColumn(name="idUsuario"),
+			   inverseJoinColumns = @JoinColumn(name = "idGrupoUsuario"))
+	private List<GrupoUsuarioTO> lstGrupoUsuario = new ArrayList<>();;
 	
 	
 	public Long getId() {
@@ -60,6 +62,15 @@ public class UsuarioTO implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+		
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
 	
 	public String getNome() {
 		return nome;
@@ -82,6 +93,7 @@ public class UsuarioTO implements Serializable{
 		this.senha = senha;
 	}
 		
+	
 	public List<GrupoUsuarioTO> getLstGrupoUsuario() {
 		return lstGrupoUsuario;
 	}

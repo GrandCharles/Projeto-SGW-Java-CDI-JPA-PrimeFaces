@@ -8,7 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.grandcharles.sgw.repository.PedidoRepository;
+import br.com.grandcharles.sgw.repository.pedido.PedidoRepository;
 import br.com.grandcharles.sgw.model.pedido.StatusPedido;
 import br.com.grandcharles.sgw.model.pedido.PedidoTO;
 import br.com.grandcharles.sgw.filter.PedidoFilter;
@@ -31,10 +31,11 @@ public class PesquisaPedidoBean implements Serializable{
 		lstPedidoFiltrado = new ArrayList<>();
 	}
 
-	public void pesquisar(){
-		lstPedidoFiltrado = repository.pesquisa(filter);
+	public void pesquisarFiltro(){
+		lstPedidoFiltrado = repository.pesquisaFiltro(filter);
 	}
 	
+
 	public StatusPedido[] getStatusPedido(){
 		return StatusPedido.values();
 	}

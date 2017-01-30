@@ -78,7 +78,7 @@ h1 {
 }
 
 .produto-tabela input {
-	width: 99%;
+	width: 90%;
 }
 
 /* Customiza TabView - início */
@@ -114,6 +114,11 @@ h1 {
 .menu-sistema .ui-icon-triangle-1-s {
     background: url(#{resource['images:seta-para-baixo.png']}) no-repeat;
 }
+
+.ui-state-disabled{
+	opacity: .80 !important;
+}
+
 /* Menu sistema fim */
 
 

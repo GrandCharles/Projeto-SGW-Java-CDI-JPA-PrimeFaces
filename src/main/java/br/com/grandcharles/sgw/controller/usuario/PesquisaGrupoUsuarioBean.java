@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import br.com.grandcharles.sgw.filter.GrupoUsuarioFilter;
 import br.com.grandcharles.sgw.model.usuario.GrupoUsuarioTO;
-import br.com.grandcharles.sgw.repository.GrupoUsuarioRepository;
+import br.com.grandcharles.sgw.repository.usuario.GrupoUsuarioRepository;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -34,8 +34,8 @@ public class PesquisaGrupoUsuarioBean  implements Serializable {
 	}
 	
 	
-	public void pesquisar(){
-		lstGrupoUsuarioFiltrado = repository.pesquisa(filter);
+	public void pesquisarFiltro(){
+		lstGrupoUsuarioFiltrado = repository.pesquisaFiltro(filter);
 	}
 	
 	public void excluir(){

@@ -3,6 +3,7 @@ package br.com.grandcharles.sgw.model.pedido;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import br.com.grandcharles.sgw.model.produto.ProdutoTO;
 
@@ -23,22 +26,52 @@ public class ItemPedidoTO implements Serializable{
 	@Column(name="id")
 	private Long id;
 	
-	//NotNull
+	@NotNull
+	@Column(name="intOrdem", nullable=false, length=6)
+	private Integer ordem;
+
+	@NotNull
 	@Column(name="intQtde", nullable=false, length=6)
-	private Integer quantidade;
+	private Integer quantidade = 1;
 
 	@Column(name="intVlrUnitario", nullable=false, precision=12, scale=2)
-	private BigDecimal vlrUnitario;
+	private BigDecimal vlrUnitario = BigDecimal.ZERO;
 	
-	//@NotNull
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="idProduto", nullable=false)
 	private ProdutoTO produtoTO;
 	
-	//@NotNull
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="idPedido", nullable=false)
 	private PedidoTO peditoTO;
+	
+
+	/* ===========================================================================================*/
+	@Transient
+	public BigDecimal getCalculaTotalItem(){	
+		if (this.getVlrUnitario() != null && this.getQuantidade() != null){
+			return this.getVlrUnitario().multiply(new BigDecimal(this.getQuantidade()));
+		}
+		return BigDecimal.ZERO;
+	}
+	
+	@Transient
+	public boolean isProdutoLancado(){
+		return this.getProdutoTO() != null && this.getProdutoTO().getId() != null;
+	}
+	
+	@Transient
+	public boolean isEstoqueSuficiente(){
+		if (this.getProdutoTO().getId() != null){
+			return this.produtoTO.getQtdeEstoque() >= this.getQuantidade(); 
+		}
+		return true;
+	}
+	/* ===========================================================================================*/
+
+	
 	
 	
 	public Long getId() {
@@ -48,6 +81,12 @@ public class ItemPedidoTO implements Serializable{
 		this.id = id;
 	}
 
+	public Integer getOrdem() {
+		return ordem;
+	}
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
+	}
 	
 	public Integer getQuantidade() {
 		return quantidade;
@@ -56,7 +95,6 @@ public class ItemPedidoTO implements Serializable{
 		this.quantidade = quantidade;
 	}
 	
-	
 	public BigDecimal getVlrUnitario() {
 		return vlrUnitario;
 	}
@@ -64,14 +102,12 @@ public class ItemPedidoTO implements Serializable{
 		this.vlrUnitario = vlrUnitario;
 	}
 		
-
 	public ProdutoTO getProdutoTO() {
 		return produtoTO;
 	}
 	public void setProdutoTO(ProdutoTO produtoTO) {
 		this.produtoTO = produtoTO;
 	}
-
 	
 	public PedidoTO getPeditoTO() {
 		return peditoTO;
@@ -79,8 +115,7 @@ public class ItemPedidoTO implements Serializable{
 	public void setPeditoTO(PedidoTO peditoTO) {
 		this.peditoTO = peditoTO;
 	}
-
-
+	
 	
 	@Override
 	public int hashCode() {
@@ -105,6 +140,5 @@ public class ItemPedidoTO implements Serializable{
 			return false;
 		return true;
 	}
-	
 	
 }

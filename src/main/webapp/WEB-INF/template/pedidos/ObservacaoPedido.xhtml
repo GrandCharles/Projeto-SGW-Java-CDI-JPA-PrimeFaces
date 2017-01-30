@@ -5,7 +5,10 @@
     xmlns:p="http://primefaces.org/ui">
 
 	<h:panelGroup layout="block" style="padding-right: 10px">
-		<p:inputTextarea rows="10" style="width: 100%" />
+		<p:inputTextarea rows="10" 
+		                 style="width: 100%"
+		                 disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
+		                 value="#{cadastroPedidoBean.pedidoTO.observacao}" />
 	</h:panelGroup>
   	
 </ui:composition>

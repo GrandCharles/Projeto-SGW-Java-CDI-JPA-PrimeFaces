@@ -31,10 +31,6 @@ public class GrupoUsuarioTO implements Serializable{
 	@Column(name="strDescricao", length=40, nullable=false)
 	private String descricao;
 
-	/*	
-	@ManyToMany(mappedBy="lstGrupoUsuario", cascade = CascadeType.ALL)
-	private List<UsuarioTO> lstUsuario;
-	*/
 	
 	public Long getId() {
 		return id;
@@ -57,14 +53,6 @@ public class GrupoUsuarioTO implements Serializable{
 		this.descricao = descricao;
 	}
 	
-	/*
-	public List<UsuarioTO> getLstUsuario() {
-		return lstUsuario;
-	}
-	public void setLstUsuario(List<UsuarioTO> lstUsuario) {
-		this.lstUsuario = lstUsuario;
-	}
-	*/
 	
 	@Override
 	public int hashCode() {

@@ -14,7 +14,7 @@
 	    	<p:toolbar style="margin-top: 20px">
 	    		<p:toolbarGroup>
 	    			<p:commandButton value="Pesquisar" 
-	    			                 action="#{pesquisaPedidoBean.pesquisar}"
+	    			                 action="#{pesquisaPedidoBean.pesquisarFiltro}"
 	    			                 update="@form"/>
 	    		</p:toolbarGroup>
 	    		
@@ -85,38 +85,48 @@
 	    		         paginatorAlwaysVisible="false" 
 	    		         paginatorPosition="bottom">
 	    	
-	    		<p:column headerText="Número" style="text-align: right; width: 50px">
+	    		<p:column headerText="Número" style="text-align: right; width: 5%">
 	    			<h:outputText value="#{vPedido.id}"/>
 	    		</p:column>
 	    		
-	    		<p:column headerText="Cliente">
-	    			<h:outputText value="#{vPedido.clienteTO.nome}"/>
-	    		</p:column>
-	    		
-	    		<p:column headerText="Vendedor">
-	    			<h:outputText value="#{vPedido.usuarioTO.nome}"/>
-	    		</p:column>
-	    		
-	    		<p:column headerText="Data de criação" style="text-align: center; width: 100px">
+	    		<p:column headerText="Data do pedido" style="text-align: center; width: 10%">
 	    			<h:outputText value="#{vPedido.dtCriacao}">
 	    				<f:convertDateTime pattern="dd/MM/yyyy" />
 	    			</h:outputText>
 	    		</p:column>
+
+	    		<p:column headerText="Cliente" style="text-align: left; width: 28%">
+	    			<h:outputText value="#{vPedido.clienteTO.nome}"/>
+	    		</p:column>
 	    		
-	    		<p:column headerText="Valor total" style="text-align: right; width: 120px">
+	    		<p:column headerText="Vendedor" style="text-align: left; width: 21%">
+	    			<h:outputText value="#{vPedido.usuarioTO.nome}"/>
+	    		</p:column>
+	    		
+	    		
+	    		<p:column headerText="Valor total" style="text-align: right; width: 10%">
 	    			<h:outputText value="#{vPedido.vlrTotal}">
 	    				<f:convertNumber type="currency"/>
 	    			</h:outputText>
 	    		</p:column>
+
+	    		<p:column headerText="Forma Pagamento" style="text-align: left; width: 14%">
+	    			<h:outputText value="#{vPedido.formaPagamento.descricao}"/>
+	    		</p:column>
 	    		
-	    		<p:column headerText="Status" style="text-align: center; width: 100px">
+	    		<p:column headerText="Status" style="text-align: left; width: 8%">
 	    			<h:outputText value="#{vPedido.statusPedido.descricao}"/>
 	    		</p:column>
 	    		
-	    		<p:column style="text-align: center; width: 50px">
-	    			<p:button icon="ui-icon-pencil" title="Editar"/>
+	    		<p:column style="width: 4%; text-align: center">
+	    			<p:button icon="ui-icon-pencil" 
+	    			          title="Editar" 
+	    			          outcome="/pedidos/CadastroPedido">
+	    				<f:param name="nPedido" value="#{vPedido.id}"/>          
+	    			</p:button>
 	    		</p:column>
-	    		
+
+    	    		
 	    	</p:dataTable>
 	    	
     	</h:form>

@@ -13,14 +13,14 @@ import javax.validation.constraints.Pattern;
 /* Poderei usar a anotação em atributo, método, outras anotações*/
 /* Ler em tempo de execução */
 
-/* @Pattern( regexp="([A-Z]{2}\\d{6,6})?" )   "[A-Z]{2}\\d{6,6}" */  
+/* @Pattern( regexp="([a-zA-Z]{2}\\d{6,6})?" )   "[A-Z]{2}\\d{6,6}" */  
 /* 2 letras, digito, minimo 6, maximo 6, com mensagem  - Expressões Regulares */ 
 
 
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy={})
-@Pattern(regexp="([A-Z]{2}\\d{6,6})?")
+@Pattern(regexp="([a-zA-Z]{2}\\d{6,6})?")
 public @interface SKU {
 
 	/* Sobrepoe a mensagem do @Pattern*/

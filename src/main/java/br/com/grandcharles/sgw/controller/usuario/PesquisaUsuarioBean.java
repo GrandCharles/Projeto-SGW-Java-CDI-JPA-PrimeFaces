@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import br.com.grandcharles.sgw.filter.UsuarioFilter;
 import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
-import br.com.grandcharles.sgw.repository.UsuarioRepository;
+import br.com.grandcharles.sgw.repository.usuario.UsuarioRepository;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -34,8 +34,8 @@ public class PesquisaUsuarioBean  implements Serializable {
 	}
 	
 	
-	public void pesquisar(){
-		lstUsuarioFiltrado = repository.pesquisa(filter);
+	public void pesquisarFiltro(){
+		lstUsuarioFiltrado = repository.pesquisaFiltro(filter);
 	}
 	
 	public void excluir(){

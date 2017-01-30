@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import br.com.grandcharles.sgw.model.usuario.GrupoUsuarioTO;
 import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
-import br.com.grandcharles.sgw.repository.GrupoUsuarioRepository;
-import br.com.grandcharles.sgw.service.UsuarioService;
+import br.com.grandcharles.sgw.repository.usuario.GrupoUsuarioRepository;
+import br.com.grandcharles.sgw.service.usuario.UsuarioService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -26,9 +26,10 @@ public class CadastroUsuarioBean implements Serializable{
 	@Inject
 	private UsuarioService service; 
 	
+	@NotNull
+	private GrupoUsuarioTO grupoUsuarioTO;
+
 	private UsuarioTO usuarioTO;
-	
-	private GrupoUsuarioTO usuarioGrupoUsuarioTO;
 
 	private List<GrupoUsuarioTO> lstGrupoUsuario;
 
@@ -42,9 +43,11 @@ public class CadastroUsuarioBean implements Serializable{
 		if (FacesUtil.isNotPostback()){
 			lstGrupoUsuario = repository.buscarGrupoUsuario();
 		}
+
 	}
 	
 
+	
 	public void salvar() {
 		this.usuarioTO = service.salvar(usuarioTO);
 		
@@ -56,7 +59,7 @@ public class CadastroUsuarioBean implements Serializable{
 
 	private void limpar(){
 		usuarioTO = new UsuarioTO();
-		usuarioGrupoUsuarioTO = null;
+		grupoUsuarioTO = null;
 		lstGrupoUsuario = new ArrayList<>();
 	}
 
@@ -74,18 +77,17 @@ public class CadastroUsuarioBean implements Serializable{
 		
 		/*
 		if (this.usuarioTO !=null){
-			this.grupoUsuarioTO = this.usuarioTO.getGrupoUsuarioTO().getGrupoUsuarioTO();
+			this.grupoUsuarioTO = this.usuarioTO.getLstGrupoUsuario().get;
 		}
 		*/
 	}
 
 
-	//@NotNull
-	public GrupoUsuarioTO getUsuarioGrupoUsuarioTO() {
-		return usuarioGrupoUsuarioTO;
+	public GrupoUsuarioTO getGrupoUsuarioTO() {
+		return grupoUsuarioTO;
 	}
-	public void setUsuarioGrupoUsuarioTO(GrupoUsuarioTO usuarioGrupoUsuarioTO) {
-		this.usuarioGrupoUsuarioTO = usuarioGrupoUsuarioTO;
+	public void setGrupoUsuarioTO(GrupoUsuarioTO grupoUsuarioTO) {
+		this.grupoUsuarioTO = grupoUsuarioTO;
 	}
 
 

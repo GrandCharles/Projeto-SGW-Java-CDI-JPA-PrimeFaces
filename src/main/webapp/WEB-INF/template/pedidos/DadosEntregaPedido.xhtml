@@ -12,6 +12,7 @@
 		<p:calendar id="idDtEntrega" 
 		            size="10" 
 		            pattern="dd/MM/yyyy" 
+		            disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 					value="#{cadastroPedidoBean.pedidoTO.dtEntrega}"/>
 		
 		<p:spacer />
@@ -21,6 +22,7 @@
 		<p:inputText id="idEntregaLogradouro" 
 		              size="50" 
 		              maxlength="40"
+		              disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 		              value="#{cadastroPedidoBean.pedidoTO.enderecoEntregaTO.logradouro}"/>
 
 
@@ -28,6 +30,7 @@
 		<p:inputText id="idEntregaNumero" 
 		             size="5" 
 		             maxlength="10"
+		             disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 		             value="#{cadastroPedidoBean.pedidoTO.enderecoEntregaTO.numero}"/>
 
 
@@ -35,6 +38,7 @@
 		<p:inputText id="idEntregaComplemento" 
 		             size="50"
 		             maxlength="40" 
+		             disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 		             value="#{cadastroPedidoBean.pedidoTO.enderecoEntregaTO.complemento}"/>
 
 
@@ -42,6 +46,7 @@
 		<p:inputText id="idEntregaCidade" 
 		             size="20"
 		             maxlength="20" 
+		             disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 		             value="#{cadastroPedidoBean.pedidoTO.enderecoEntregaTO.cidade}"/>
 
 
@@ -49,6 +54,7 @@
 		<p:inputText id="idEntregaEstado" 
 		             size="20"
 		             maxlength="10" 
+		             disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 		             value="#{cadastroPedidoBean.pedidoTO.enderecoEntregaTO.uf}"/>
 
 
@@ -56,6 +62,7 @@
 		<p:inputText id="IdEntregaCep" 
 		             size="10"
 		             maxlength="8"
+		             disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}"
 		             value="#{cadastroPedidoBean.pedidoTO.enderecoEntregaTO.cep}"/>
 	</p:panelGrid>
 

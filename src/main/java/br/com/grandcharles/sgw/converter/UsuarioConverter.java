@@ -6,7 +6,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
-import br.com.grandcharles.sgw.repository.UsuarioRepository;
+import br.com.grandcharles.sgw.repository.usuario.UsuarioRepository;
 import br.com.grandcharles.sgw.util.cdi.CDIServiceLocator;
 
 @FacesConverter(forClass = UsuarioTO.class)
@@ -17,17 +17,16 @@ public class UsuarioConverter implements Converter{
 	
 	// solução e retornar uma instancia (Bean CDI) do UsuarioRepository.class no contexto CDI.
 	public UsuarioConverter(){
-		repository = CDIServiceLocator.getBean(UsuarioRepository.class);
+		this.repository = (UsuarioRepository) CDIServiceLocator.getBean(UsuarioRepository.class);
 	}
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		UsuarioTO retorno = null;
+	
 		if (value != null){
-			Long id = new Long(value);
-			retorno= repository.porId(id); 
+			retorno = this.repository.porId(new Long(value)); 
 		}
-		
 		return retorno;
 	}
 
@@ -35,7 +34,6 @@ public class UsuarioConverter implements Converter{
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		if (value != null){
 			UsuarioTO usuarioTO = (UsuarioTO) value;
-			
 			return usuarioTO.getId() == null ? null : usuarioTO.getId().toString();
 		}
 		return "";

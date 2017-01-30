@@ -6,8 +6,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.grandcharles.sgw.model.produto.CategoriaTO;
-import br.com.grandcharles.sgw.model.produto.ProdutoTO;
-import br.com.grandcharles.sgw.repository.CategoriasRepository;
+import br.com.grandcharles.sgw.repository.produto.CategoriasRepository;
 import br.com.grandcharles.sgw.util.cdi.CDIServiceLocator;
 
 @FacesConverter(forClass = CategoriaTO.class)
@@ -18,7 +17,7 @@ public class CategoriaConverter implements Converter{
 	
 	// solução e retornar uma instancia (Bean CDI) do CategoriaRepository.class no contexto CDI.
 	public CategoriaConverter(){
-		repository = CDIServiceLocator.getBean(CategoriasRepository.class);
+		repository = (CategoriasRepository) CDIServiceLocator.getBean(CategoriasRepository.class);
 	}
 	
 	@Override
@@ -28,7 +27,6 @@ public class CategoriaConverter implements Converter{
 			Long id = new Long(value);
 			retorno= repository.porId(id); 
 		}
-		
 		return retorno;
 	}
 

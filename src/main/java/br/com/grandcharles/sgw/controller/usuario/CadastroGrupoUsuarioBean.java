@@ -1,34 +1,35 @@
 package br.com.grandcharles.sgw.controller.usuario;
 
 import java.io.Serializable;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.grandcharles.sgw.model.usuario.GrupoUsuarioTO;
-import br.com.grandcharles.sgw.service.GrupoUsuarioService;
+import br.com.grandcharles.sgw.service.usuario.GrupoUsuarioService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
 @ViewScoped
 public class CadastroGrupoUsuarioBean implements Serializable{
 	private static final long serialVersionUID = 1L;
-
 	
 	@Inject
 	private GrupoUsuarioService service; 
 	
 	private GrupoUsuarioTO grupoUsuarioTO;
 	
-		
+
 	public CadastroGrupoUsuarioBean(){
 		limpar();
 	}
 	
-	
-	public void inicializar(){
+
+	private void limpar(){
+		grupoUsuarioTO = new GrupoUsuarioTO();
 	}
-	
+
 	
 	public void salvar() {
 		this.grupoUsuarioTO = service.salvar(grupoUsuarioTO);
@@ -37,11 +38,6 @@ public class CadastroGrupoUsuarioBean implements Serializable{
 	}
 
 
-	private void limpar(){
-		grupoUsuarioTO = new GrupoUsuarioTO();
-	}
-
-	
 	public boolean isEditando() {
 		return this.grupoUsuarioTO.getId() != null;
 	}

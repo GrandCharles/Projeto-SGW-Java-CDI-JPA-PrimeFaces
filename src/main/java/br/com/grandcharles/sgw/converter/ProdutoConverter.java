@@ -6,28 +6,26 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.grandcharles.sgw.model.produto.ProdutoTO;
-import br.com.grandcharles.sgw.repository.ProdutosRepository;
+import br.com.grandcharles.sgw.repository.produto.ProdutoRepository;
 import br.com.grandcharles.sgw.util.cdi.CDIServiceLocator;
 
 @FacesConverter(forClass = ProdutoTO.class)
 public class ProdutoConverter implements Converter{
 
 	//@Inject - Não funciona em classe converter no jsf 2.2
-	private ProdutosRepository repository;
+	private ProdutoRepository repository;
 	
 	// solução e retornar uma instancia (Bean CDI) do CategoriaRepository.class no contexto CDI.
 	public ProdutoConverter(){
-		repository = CDIServiceLocator.getBean(ProdutosRepository.class);
+		this.repository = (ProdutoRepository) CDIServiceLocator.getBean(ProdutoRepository.class);
 	}
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		ProdutoTO retorno = null;
 		if (value != null){
-			Long id = new Long(value);
-			retorno= repository.porId(id); 
+			retorno= this.repository.porId(new Long(value)); 
 		}
-		
 		return retorno;
 	}
 

@@ -16,7 +16,7 @@
 	    	<p:toolbar style="margin-top: 20px">
 	    		<p:toolbarGroup>
 	    			<p:commandButton value="Pesquisar" 
-	    			                 action="#{pesquisaUsuarioBean.pesquisar}"
+	    			                 action="#{pesquisaUsuarioBean.pesquisarFiltro}"
 	    			                 update="@form"/>
 	    		</p:toolbarGroup>
 	    		
@@ -48,20 +48,27 @@
 	    		         paginatorAlwaysVisible="false" 
 	    		         paginatorPosition="bottom">
 	    	
-	    		<p:column headerText="Nome" style="text-align: left; width: 170px">
+	    		<p:column headerText="Login" style="text-align: left; width: 25%">
+	    			<h:outputText value="#{vUsuario.login}"/>
+	    		</p:column>
+
+	    		<p:column headerText="Nome" style="text-align: left; width: 25%">
 	    			<h:outputText value="#{vUsuario.nome}"/>
 	    		</p:column>
 	    		
-	    		<p:column headerText="E-Mail" style="text-align: left; width: 170px">
+	    		<p:column headerText="E-Mail" style="text-align: left; width: 20%">
 	    			<h:outputText value="#{vUsuario.email}"/>
 	    		</p:column>
 
-	    		<p:column headerText="Grupo" style="text-align: left; width: 250px">
+	    		<p:column headerText="Grupo" style="text-align: left; width: 20%">
 	    			<h:outputText value="#{vUsuario.lstGrupoUsuario}"/>
 	    		</p:column>
 
+	    		<p:column headerText="Senha" style="text-align: center; width: 10%">
+	    			<h:outputText value="#{vUsuario.senha}"/>
+	    		</p:column>
 	    		
-	    		<p:column style="width: 30px; text-align: center">
+	    		<p:column style="text-align: center; width: 10% ">
 	    			<p:button icon="ui-icon-pencil" 
 	    			          title="Editar" 
 	    			          outcome="/usuarios/CadastroUsuario">

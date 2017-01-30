@@ -4,38 +4,107 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:dataTable value="#{cadastroPedidoBean.itensPedidoTO}" 
-	             var="item"
-		         id="tabelaItens">
+	<p:dataTable id="idTabelaItens"
+				 var="vItem"
+				 rowIndexVar="vLinha"
+	             value="#{cadastroPedidoBean.pedidoTO.lstItemPedido	}">
 		         
-		<p:column headerText="SKU" style="text-align: center; width: 100px">
-			<p:inputText size="8" />
-		</p:column>
-		
-		<p:column headerText="Produto">
-			<p:autoComplete styleClass="produto-tabela" />
-		</p:column>
-		
-		<p:column headerText="Valor unitário" style="text-align: right; width: 120px">
-			<h:outputText value="R$ 0,00" />
-		</p:column>
-		
-		<p:column headerText="Quantidade" style="text-align: center; width: 100px">
-			<p:inputText size="8" value="1" />
+		<p:column headerText="Ordem" style="text-align: right; width: 5%">
+			<h:outputText value="#{vItem.ordem}" rendered="#{vItem.produtoLancado}"/>
 		</p:column>
 
-		<p:column headerText="Estoque" style="text-align: center; width: 100px">
-			<h:outputText value="0" />
+
+		<p:column headerText="SKU" style="text-align: center; width: 9%">
+			<h:outputText value="#{vItem.produtoTO.sku}" rendered="#{vItem.produtoLancado}" />
+		
+			<p:inputText label="SKU"
+			             size="5" 
+			             value="#{cadastroPedidoBean.sku}"
+			             rendered="#{not vItem.produtoLancado}" >
+			             
+				<p:ajax event="change"
+						process="@this"
+						listener="#{cadastroPedidoBean.carregarProdutoPorSku}" 
+				        update="idTabelaItens :idFormPedido:idSubtotal :idFormPedido:idTotPed"/>
+			</p:inputText>	             
+		</p:column>
+		
+		
+		<p:column headerText="Produto" style="text-align: left; width: 49%">
+			<h:outputText value="#{vItem.produtoTO.descricao}" 
+			              rendered="#{vItem.produtoLancado}"/>
+			              
+			<p:autoComplete id="idProduto" 
+							styleClass="produto-tabela"
+			                size="80" 
+			                dropdown="true"
+			                forceSelection="true" 
+			                value="#{cadastroPedidoBean.produtoTO}"
+			                completeMethod="#{cadastroPedidoBean.completarProduto}"
+			                var="produtoTO"
+			                itemValue="#{produtoTO}"
+			                itemLabel="#{produtoTO.descricao}"
+			                rendered="#{not vItem.produtoLancado}">
+				<p:ajax event="itemSelect" 
+				        update="idTabelaItens :idFormPedido:idSubtotal :idFormPedido:idTotPed"
+				        listener="#{cadastroPedidoBean.carregarProdutoEdicao}"/>
+			</p:autoComplete>
+		</p:column>
+		
+		
+		<p:column headerText="Valor unitário" style="text-align: right; width: 10%">
+			<h:outputText value="#{vItem.produtoTO.vlrUnitario}">
+				<f:convertNumber type="currency"/>
+			</h:outputText>
+		</p:column>
+		
+		
+		<p:column headerText="Quantidade" style="text-align: right; width: 10%">
+			<p:inputText size="2" 
+			             value="#{vItem.quantidade}" 
+			             style="text-align: right"
+			             disabled="#{not cadastroPedidoBean.pedidoTO.pedidoAlteravel}">
+				<f:convertNumber pattern="0"/>
+				<p:ajax event="change" 
+				        process="@this"
+				        update="idTabelaItens :idFormPedido:idSubtotal :idFormPedido:idTotPed"
+				        listener="#{cadastroPedidoBean.atualizarQtde(vItem,vLinha)}"/>
+			</p:inputText>
 		</p:column>
 
-		<p:column headerText="Valor total" style="text-align: right; width: 100px">
-			<h:outputText value="R$ 0,00" />
+
+		<p:column headerText="Estoque" style="text-align: right; width: 7%">
+			<h:outputText value="#{vItem.produtoTO.qtdeEstoque}" 
+			              style="#{vItem.estoqueSuficiente ? 'color:blue' : 'color:red'}" />
+				<h:graphicImage id="idSemEstoque"
+				                library="images" 
+				                name="alerta.png" 
+				                style="vertical-align: bottom; margin-left: 5px" 
+				                rendered="#{not vItem.estoqueSuficiente}"/>
+				<p:tooltip for="idSemEstoque" 
+				           value="Estoque insuficiente"
+				           rendered="#{not vItem.estoqueSuficiente}" />
 		</p:column>
+
+
+		<p:column headerText="Valor total" style="text-align: right; width: 10%">
+			<h:outputText value="#{vItem.calculaTotalItem}" >
+				<f:convertNumber type="currency"/>
+			</h:outputText>
+		</p:column>
+
 
 		<p:columnGroup type="footer">
 			<p:row>
-				<p:column colspan="5" footerText="Subtotal"	style="text-align: right" />
-				<p:column footerText="R$ 0,00" style="text-align: right" />
+				<p:column colspan="6" footerText="Subtotal"	style="text-align: right" />
+				
+				<p:column style="text-align: right">
+					<f:facet name="footer">
+						<h:outputText value="#{cadastroPedidoBean.pedidoTO.calcularSubTotal}">
+							<f:convertNumber type="currency"/>
+						</h:outputText>
+					</f:facet>
+				</p:column>
 			</p:row>
 		</p:columnGroup>
 
