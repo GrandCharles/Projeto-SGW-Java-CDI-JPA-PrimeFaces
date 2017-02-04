@@ -18,7 +18,7 @@
 		<h:form>
 	    	<h1>#{cadastroUsuarioBean.editando ? 'Edição de usuário' : 'Novo usuário'}</h1>
 			
-			<p:messages autoUpdate="true" closable="true" />
+			<p:growl id="msgDialog" autoUpdate="true" />
 
 			<p:toolbar style="margin-top: 20px">
 				<p:toolbarGroup>
@@ -28,11 +28,12 @@
 					                 id="botaoSalvar" 
 					                 action="#{cadastroUsuarioBean.salvar}"
 					                 update="@form"/>
+					<p:separator/>
+					
+					<p:button value="Pesquisa" outcome="/usuarios/PesquisaUsuario" />
+
 				</p:toolbarGroup>
 				
-				<p:toolbarGroup align="right">
-					<p:button value="Pesquisa" outcome="/usuarios/PesquisaUsuario" />
-				</p:toolbarGroup>
 			</p:toolbar>
 
 			<p:panelGrid id="painel"
@@ -61,27 +62,9 @@
 				             value="#{cadastroUsuarioBean.usuarioTO.email}"/>
 
 
-				<p:outputLabel value="Senha" for="idSenha"/>
-				<p:inputText id="idSenha" 
-				             size="30" 
-				             maxlength="20" 
-				             value="#{cadastroUsuarioBean.usuarioTO.senha}"/>
-				
-
-				<p:outputLabel value="Grupo" for="idGrupo"/>
-				<p:selectOneMenu id="idGrupo" 
-				                 value="#{cadastroUsuarioBean.grupoUsuarioTO}">
-					<f:selectItem itemLabel="Selecione o grupo" />
-					<f:selectItems value="#{cadastroUsuarioBean.lstGrupoUsuario}"
-					               var="grupoUsuarioTO"
-					               itemValue="#{grupoUsuarioTO}"
-					               itemLabel="#{grupoUsuarioTO.nome}"/>
-				</p:selectOneMenu>
-
-				<!-- 
-				<p:password id="idSenha"
+			<p:password id="idSenha"
 				            size="40" 
-				            maxlength="20"
+				            maxlength="10"
 				            feedback="true"
 				            promptLabel="Informe uma senha"
 				            weakLabel="Fraca"
@@ -93,12 +76,22 @@
 				<p:outputLabel value="Confirma a senha" for="idSenha2" />
 				<p:password id="idSenha2"
 				             size="40" 
-				             maxlength="20"
+				             maxlength="10"
 				             required="true"/>
- 				-->
 
+		
 
-				 
+				<p:outputLabel value="Grupo" for="idGrupo"/>
+				<p:selectOneMenu id="idGrupo" 
+				                 value="#{cadastroUsuarioBean.grupoUsuarioTO}">
+					<f:selectItem itemLabel="Selecione o grupo" />
+					<f:selectItems value="#{cadastroUsuarioBean.lstGrupoUsuario}"
+					               var="grupoUsuarioTO"
+					               itemValue="#{grupoUsuarioTO}"
+					               itemLabel="#{grupoUsuarioTO.nome}"/>
+				</p:selectOneMenu>
+
+					 
 			</p:panelGrid>
 		</h:form>
 	</ui:define>

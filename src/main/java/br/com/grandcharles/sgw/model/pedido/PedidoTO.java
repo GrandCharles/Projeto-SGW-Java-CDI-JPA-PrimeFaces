@@ -29,7 +29,7 @@ import br.com.grandcharles.sgw.model.produto.ProdutoTO;
 import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
 
 @Entity
-@Table(name="tbpedido")
+@Table(name="tbPedido")
 public class PedidoTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -111,8 +111,6 @@ public class PedidoTO implements Serializable {
 	public boolean isCancelado(){
 		return StatusPedido.CANCELADO.equals(this.getStatusPedido());
 	}
-	
-	
 	@Transient
 	public boolean isPedidoNegativo(){
 		return this.getVlrTotal().compareTo(BigDecimal.ZERO) < 0;
@@ -128,6 +126,10 @@ public class PedidoTO implements Serializable {
 	@Transient
 	public boolean isPedidoAlteravel(){
 		return this.isOrcamento();
+	}
+	@Transient
+	public boolean isEmailEnviavel(){
+		return this.isEmitido();
 	}
 
 	

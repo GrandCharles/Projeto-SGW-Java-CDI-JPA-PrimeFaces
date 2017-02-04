@@ -19,7 +19,7 @@ public class UsuarioService implements Serializable {
 	public UsuarioTO salvar(UsuarioTO usuarioTO){
 		UsuarioTO existe = repository.existeLogin(usuarioTO.getLogin());
 		
-		if (existe != null && !existe.equals(usuarioTO)){
+		if (usuarioTO.isNovo()&& existe != null && !existe.equals(usuarioTO)){
 			throw new NegocioException("Login de usuário já existente!");
 		}
 		return repository.salvar(usuarioTO);

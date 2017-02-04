@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -17,9 +18,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import br.com.grandcharles.sgw.model.pedido.ItemPedidoTO;
+
 
 @Entity
-@Table(name="tbcliente")
+@Table(name="tbCliente")
 public class ClienteTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -45,9 +48,12 @@ public class ClienteTO implements Serializable {
 	@Column(name="strDocCpfCnpj", length=14, nullable=false)
 	private String docCpfCnpj;
 
-	@OneToMany(mappedBy = "clienteTO", cascade=CascadeType.ALL)
-	private List<EnderecoTO> lstEnderecos = new ArrayList<>();
-
+	@OneToMany(mappedBy = "clienteTO", 
+			   cascade = CascadeType.ALL, 
+			   orphanRemoval = true, 
+			   fetch = FetchType.LAZY, 
+			   targetEntity = EnderecoTO.class)
+	private List<EnderecoTO> lstEndereco = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -84,11 +90,11 @@ public class ClienteTO implements Serializable {
 		this.docCpfCnpj = docCpfCnpj;
 	}
 	
-	public List<EnderecoTO> getLstEnderecos() {
-		return lstEnderecos;
+	public List<EnderecoTO> getLstEndereco() {
+		return lstEndereco;
 	}
-	public void setLstEnderecos(List<EnderecoTO> lstEnderecos) {
-		this.lstEnderecos = lstEnderecos;
+	public void setLstEndereco(List<EnderecoTO> lstEndereco) {
+		this.lstEndereco = lstEndereco;
 	}
 	
 		

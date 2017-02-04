@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name="tbgrupousuario")
+@Table(name="tbGrupoUsuario")
 public class GrupoUsuarioTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

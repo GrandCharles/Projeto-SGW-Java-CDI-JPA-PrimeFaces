@@ -13,13 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name="tbusuario")
+@Table(name="tbUsuario")
 public class UsuarioTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -44,17 +45,23 @@ public class UsuarioTO implements Serializable{
 	private String email;
 
 	@NotBlank
-	@Size(max=20)
-	@Column(name="strSenha", length=20, nullable=false)
+	@Size(max=100)
+	@Column(name="strSenha", length=100, nullable=false)
 	private String senha;
 	
 	//@NotNull
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "dpusuariogrupo", 
+	@JoinTable(name = "dpUsuarioGrupo", 
 	           joinColumns = @JoinColumn(name="idUsuario"),
 			   inverseJoinColumns = @JoinColumn(name = "idGrupoUsuario"))
-	private List<GrupoUsuarioTO> lstGrupoUsuario = new ArrayList<>();;
+	private List<GrupoUsuarioTO> lstGrupoUsuario = new ArrayList<>();
 	
+	
+	@Transient
+	public boolean isNovo(){
+		return getId() == null;
+	}
+
 	
 	public Long getId() {
 		return id;

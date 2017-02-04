@@ -17,6 +17,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.grandcharles.sgw.filter.UsuarioFilter;
 import br.com.grandcharles.sgw.model.cliente.ClienteTO;
+import br.com.grandcharles.sgw.model.produto.ProdutoTO;
 import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
 import br.com.grandcharles.sgw.service.NegocioException;
 import br.com.grandcharles.sgw.util.jpa.Transactional;
@@ -65,26 +66,48 @@ public class UsuarioRepository implements Serializable{
 	
 	public List<UsuarioTO> pesquisaPorNome(String nome){
 		return this.manager.createQuery("from UsuarioTO where upper(nome) like :nome",UsuarioTO.class)
-				.setParameter("nome",nome.toUpperCase() + "%")
-				.getResultList();
+				           .setParameter("nome",nome.toUpperCase() + "%")
+				           .getResultList();
 	}
 	
 	
-	public UsuarioTO existeLogin(String login){
-		try {
-		return this.manager.createQuery("from UsuarioTO where upper(login) = :valor",UsuarioTO.class)
-				.setParameter("valor", login.toUpperCase())
-				.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-
 
 
 	public UsuarioTO porId(Long id){
 		return this.manager.find(UsuarioTO.class, id);
 	}
+	
+	public UsuarioTO porEmail(String email){
+		UsuarioTO usuarioTO = null;
+		try {
+			usuarioTO = this.manager.createQuery("from UsuarioTO where lower(email) = :valor",UsuarioTO.class)
+			                        .setParameter("valor", email.toLowerCase())
+			                        .getSingleResult();
+		} catch (NoResultException e){
+			// Nenhum usuário encontrado com o E-Mail informado
+		}
+		return usuarioTO;
+	}
+	
+	public UsuarioTO porLogin(String login){
+		UsuarioTO usuarioTO = null;
+		try {
+			usuarioTO = this.manager.createQuery("from UsuarioTO where upper(login) = :valor",UsuarioTO.class)
+					                .setParameter("valor", login.toUpperCase())
+				                    .getSingleResult();
+		} catch (NoResultException e) {
+		}
+		return usuarioTO;
+	}
 
+	public UsuarioTO existeLogin(String login){
+		try {
+			return manager.createQuery("from UsuarioTO where upper(login)=:valor",UsuarioTO.class)
+					.setParameter("valor", login.toUpperCase())
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}	
 	
 }

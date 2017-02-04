@@ -19,7 +19,7 @@
 		<h:form id="idFormPedido">
 	    	<h1>#{cadastroPedidoBean.novo ? 'Novo pedido' : 'Edição de pedido'}</h1>
 			
-			<p:messages autoUpdate="true" closable="true"/>
+			<p:growl id="msgDialog" autoUpdate="true" />
 
 			<ui:include src="/WEB-INF/template/pedidos/BotoesPedido.xhtml" />
 

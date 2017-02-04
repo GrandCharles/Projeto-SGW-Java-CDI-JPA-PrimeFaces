@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import br.com.grandcharles.sgw.model.usuario.GrupoUsuarioTO;
 import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
 import br.com.grandcharles.sgw.repository.usuario.GrupoUsuarioRepository;
@@ -49,6 +51,11 @@ public class CadastroUsuarioBean implements Serializable{
 
 	
 	public void salvar() {
+		String password = usuarioTO.getSenha();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();	
+		String hashedPassword = passwordEncoder.encode(password);
+		this.usuarioTO.setSenha(hashedPassword);
+		
 		this.usuarioTO = service.salvar(usuarioTO);
 		
 		//limpar();

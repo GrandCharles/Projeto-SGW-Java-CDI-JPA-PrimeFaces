@@ -22,6 +22,11 @@ public class ClienteService implements Serializable {
 		if (existe != null && !existe.equals(clienteTO)){
 			throw new NegocioException("Cliente já existente!");
 		}
+		
+		clienteTO.setDocCpfCnpj(clienteTO.getDocCpfCnpj().replace(".", "")
+				                                         .replace("/", "")
+				                                         .replace("-", ""));
+		
 		return repository.salvar(clienteTO);
 	}
 	

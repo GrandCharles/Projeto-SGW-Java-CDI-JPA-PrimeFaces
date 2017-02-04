@@ -9,12 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import br.com.grandcharles.sgw.model.pedido.PedidoTO;
+
 @Entity
-@Table(name="tbendereco")
+@Table(name="tbEndereco")
 public class EnderecoTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -52,10 +55,11 @@ public class EnderecoTO implements Serializable {
 	@Column(name="strCep", length=8, nullable=false)
 	private String cep;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="idCliente", nullable=false)
 	private ClienteTO clienteTO;
-	
+
 
 	public void setId(Long id) {
 		this.id = id;

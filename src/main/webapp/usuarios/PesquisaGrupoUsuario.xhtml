@@ -18,10 +18,12 @@
 	    			<p:commandButton value="Pesquisar" 
 	    			                 action="#{pesquisaGrupoUsuarioBean.pesquisarFiltro}"
 	    			                 update="@form"/>
+					<p:separator/>
+
+	    			<p:button value="Novo" outcome="/usuarios/CadastroGrupoUsuario" />
 	    		</p:toolbarGroup>
 	    		
 	    		<p:toolbarGroup align="right">
-	    			<p:button value="Novo" outcome="/usuarios/CadastroGrupoUsuario" />
 	    		</p:toolbarGroup>
 	    	</p:toolbar>
 	    	

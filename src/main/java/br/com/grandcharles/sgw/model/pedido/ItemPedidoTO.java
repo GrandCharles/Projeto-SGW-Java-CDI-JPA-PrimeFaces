@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 import br.com.grandcharles.sgw.model.produto.ProdutoTO;
 
 @Entity
-@Table(name="tbitempedido")
+@Table(name="tbItemPedido")
 public class ItemPedidoTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 

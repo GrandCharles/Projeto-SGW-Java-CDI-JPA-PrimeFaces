@@ -8,8 +8,11 @@
 
 	<h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        
         <title><ui:insert name="titulo">#{msg.nomeSistema}</ui:insert></title>
+        
         <h:outputStylesheet library="css" name="sistema.css" />
+        
         <h:outputScript library="js" name="jquery.maskMoney.js"/>
 	</h:head>
 
@@ -26,13 +29,13 @@
 		<header>
 			<div style="float: left">
 				<h:link>
-					<h:graphicImage library="images" name="logo-algaworks.png" />
+					<h:graphicImage library="images" name="iron-maiden.png" />
 				</h:link>
 			</div>
 			
 			<div style="float: right; margin-right: 110px">
 				<span style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
-					Olá usuário
+					Olá #{usuarioLogado.nomeUsuario}
 				</span>
 				
 				<h:form style="display: inline-block">
@@ -71,8 +74,9 @@
 				
 							</p:submenu>
 				
-						</p:submenu>						
-						<p:menuitem value="Sair" />
+						</p:submenu>	
+											
+						<p:menuitem value="Sair" url="/logout"/>
 						
 					</p:menubar>				
 				</h:form>
@@ -89,7 +93,7 @@
 		<p:separator style="margin-top: 20px"/>
 		
 		<footer>
-			Curso Online de Sistemas Comerciais Java EE com CDI, JPA e PrimeFaces -
+			Sistemas Comerciais Java EE com CDI, JPA e PrimeFaces -
 			<a href="http://bit.ly/Y8saFl" target="_blank">grandcharles@hotmail.com</a>
 		</footer>
 

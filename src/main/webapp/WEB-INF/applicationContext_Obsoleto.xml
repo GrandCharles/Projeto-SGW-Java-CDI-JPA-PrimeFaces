@@ -1,0 +1,35 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+			                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			                     http://www.springframework.org/schema/security
+			                     http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+     
+	<!-- Arquivo de configuração do spring -->
+
+	<!-- <beans:bean id="appUserDetailsService" class="br/com/grandcharles/sgw/security/AppUserDetailsService.java"/> -->	
+	
+	<http pattern="/javax.faces.resource/**" security="none" />
+	     
+	<!-- Configuração de autenticação -->
+	<http auto-config="true" use-expressions="true">
+		<!-- <intercept-url pattern="/**" access="ROLE_ADMINISTRADORES" /> -->
+		<intercept-url pattern="/Home.xhtml" access="isAuthenticated()"/>
+		<intercept-url pattern="/clientes/**" access="hasAnyRole('ADMINISTRADORES')"/>
+		<intercept-url pattern="/pedidos/**" access="hasAnyRole('VENDEDORES','ADMINISTRADORES','AUXILIARES')"/>
+		<intercept-url pattern="/produtos/**" access="hasAnyRole('ADMINISTRADORES')"/>
+		<intercept-url pattern="/usuarios/**" access="hasAnyRole('ADMINISTRADORES')"/>
+		<intercept-url pattern="/**" access="denyAll"/> 
+		
+	</http>
+	
+	<!-- Provedor de autenticação -->
+	<authentication-manager>
+		<authentication-provider user-service-ref="appUserDetailsService">
+			<!--<password-encoder hash="plaintext"/> -->
+			<!--<password-encoder hash="md5"/> -->
+		</authentication-provider>
+	</authentication-manager>
+           
+</beans:beans>

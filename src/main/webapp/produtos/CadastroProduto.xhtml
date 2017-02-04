@@ -18,7 +18,7 @@
 		<h:form>
 	    	<h1>#{cadastroProdutoBean.editando ? 'Edição de produto' : 'Novo produto'}</h1>
 			
-			<p:messages autoUpdate="true" closable="true" />
+			<p:growl id="msgDialog" autoUpdate="true" />
 
 			<p:toolbar style="margin-top: 20px">
 				<p:toolbarGroup>

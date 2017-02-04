@@ -5,6 +5,8 @@
 	     id="WebApp_ID" 
 	     version="3.0">
 	
+	
+	<!-- ===================================================================================================== -->
 	<!-- WELD -->
     <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
@@ -29,4 +31,5 @@
 	<welcome-file-list>
 		<welcome-file>Home.xhtml</welcome-file>
 	</welcome-file-list>
+		
 </web-app>

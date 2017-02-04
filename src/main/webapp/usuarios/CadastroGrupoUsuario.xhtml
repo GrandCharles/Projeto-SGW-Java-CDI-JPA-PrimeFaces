@@ -18,7 +18,7 @@
 		<h:form>
 	    	<h1>#{cadastroGrupoUsuarioBean.editando ? 'Edição de Grupo de Usuário' : 'Novo Grupo Usuário'}</h1>
 			
-			<p:messages autoUpdate="true" closable="true" />
+			<p:growl id="msgDialog" autoUpdate="true" />
 
 			<p:toolbar style="margin-top: 20px">
 				<p:toolbarGroup>
@@ -28,11 +28,11 @@
 					                 id="botaoSalvar" 
 					                 action="#{cadastroGrupoUsuarioBean.salvar}"
 					                 update="@form"/>
-				</p:toolbarGroup>
-				
-				<p:toolbarGroup align="right">
+					<p:separator/>
+					
 					<p:button value="Pesquisa" outcome="/usuarios/PesquisaGrupoUsuario" />
 				</p:toolbarGroup>
+				
 			</p:toolbar>
 
 			<p:panelGrid columns="2" id="painel"

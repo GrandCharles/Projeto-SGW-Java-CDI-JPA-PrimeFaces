@@ -28,7 +28,11 @@
 			                 process="@this" 
 			                 update="@form"/>
 			
-			<p:commandButton value="Enviar E-Mail"/>
+			<p:commandButton value="Enviar E-Mail"
+							 disabled="#{not cadastroPedidoBean.pedidoTO.emailEnviavel}"
+							 action="#{envioEmailPedidoBean.enviarEmail}"
+			                 process="@this" 
+			                 update="@form"/>
 
 			<p:separator/>
 

@@ -1,0 +1,60 @@
+<html>
+	<body>
+		<table>
+			<tr>
+				<td style="witdh: 100px">
+					 Número:
+				</td>			
+				<td>$pedidoTO.id </td>			
+			</tr>		
+
+			<tr>
+				<td>Cliente:</td>			
+				<td>$pedidoTO.clienteTO.nome </td>			
+			</tr>		
+			<tr>
+				<td>Valor Frete:</td>			
+				<td>$numberTool.format("¤ #0.00",$pedidoTO.vlrFrete,$locale) </td>		
+			</tr>		
+			<tr>
+				<td>Valor Desconto:</td>			
+				<td>$numberTool.format("¤ #0.00",$pedidoTO.vlrDesconto,$locale) </td>		
+			</tr>		
+			<tr>
+				<td>Valor Total:</td>			
+				<td>$numberTool.format("¤ #0.00",$pedidoTO.vlrTotal,$locale) </td>		
+			</tr>		
+		
+		</table>
+		
+		<br/>
+		
+		<table border="1" cellspacing="0" celpadding="3">
+			<tr>
+				<th>Produto</th>
+				<th>Valor unitário</th>
+				<th>Quantidade</th>
+				<th>Valor Total</th>
+			</tr>	
+			#foreach ($item in $pedidoTO.lstItemPedido)
+				#if ($item.produtoTO.id)	
+					<tr>
+						<th>$item.produtoTO.descricao</th>
+						<th>$numberTool.format("¤ #0.00",$item.vlrUnitario,$locale)</th>
+						<th>$item.quantidade</th>
+						<th>$numberTool.format("¤ #0.00",$item.calculaTotalItem,$locale)</th>
+					</tr>
+				#end
+			#end
+			<tr>
+				<th>Total Itens</th>
+				<th></th>
+				<th></th>
+				<th>$numberTool.format("¤ #0.00",$pedidoTO.calcularSubTotal,$locale)</th>
+			</tr>	
+		</table>
+
+		<br/>
+		
+	</body>
+</html>
