@@ -6,17 +6,19 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:o="http://omnifaces.org/ui">
 
-    <ui:define name="titulo">#{cadastroProdutoBean.editando ? 'Edição de produto' : 'Novo produto'}</ui:define>
+    <ui:define name="titulo">#{cadastroProdutoBean.novo ? 'Novo produto' : 'Edição de produto'}</ui:define>
  
 	<ui:define name="corpo">
 		<!-- Antes da pagina ser reinderizada chame o método -->
 		<f:metadata>
 			<o:viewParam name="nProduto" value="#{cadastroProdutoBean.produtoTO}"/> 
-			<f:event listener="#{cadastroProdutoBean.inicializar}" type="preRenderView" />
+			<f:viewAction action="#{cadastroProdutoBean.inicializar}" />
+			
+			<!--  <f:event listener="#{cadastroProdutoBean.inicializar}" type="preRenderView" /> -->
 		</f:metadata>
 	
 		<h:form>
-	    	<h1>#{cadastroProdutoBean.editando ? 'Edição de produto' : 'Novo produto'}</h1>
+	    	<h1>#{cadastroProdutoBean.novo ? 'Novo produto' : 'Edição de produto'}</h1>
 			
 			<p:growl id="msgDialog" autoUpdate="true" />
 
@@ -28,24 +30,28 @@
 					                 id="botaoSalvar" 
 					                 action="#{cadastroProdutoBean.salvar}"
 					                 update="@form"/>
-				</p:toolbarGroup>
-				
-				<p:toolbarGroup align="right">
+
+					<p:separator/>
+					
 					<p:button value="Pesquisa" outcome="/produtos/PesquisaProdutos" />
 				</p:toolbarGroup>
+				
 			</p:toolbar>
 
-			<p:panelGrid id="painel"
-			             columns="2" 
-  				         style="width: 100%; 
-  				         margin-top: 20px" 
-  				         columnClasses="rotulo, campo">
+			<p:panelGrid columns="4" 
+			             style="width: 100%; margin-top: 20px"
+	             		 styleClass="panelGrid" 
+			             columnClasses="rotulo, campo, rotulo, campo">
 
 				<p:outputLabel value="SKU" for="idSku" />
 				<p:inputText id="idSku" 
 				             size="8" 
 				             maxlength="8" 
 				             value="#{cadastroProdutoBean.produtoTO.sku}"/>
+
+				<p:spacer height="10" />
+				<p:spacer height="10" />
+
 
 				<p:outputLabel value="Descrição" for="idDesc" />
 				<p:inputText id="idDesc" 
@@ -97,6 +103,9 @@
 				             style="text-align: right"
 				             value="#{cadastroProdutoBean.produtoTO.qtdeEstoque}" />
 			</p:panelGrid>
+			
 		</h:form>
+		
 	</ui:define>
+	
 </ui:composition>

@@ -18,9 +18,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import br.com.grandcharles.sgw.model.pedido.ItemPedidoTO;
-
-
 @Entity
 @Table(name="tbCliente")
 public class ClienteTO implements Serializable {

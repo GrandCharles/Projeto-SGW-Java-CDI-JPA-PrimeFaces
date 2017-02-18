@@ -21,7 +21,7 @@ import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
 import br.com.grandcharles.sgw.repository.cliente.ClienteRepository;
 import br.com.grandcharles.sgw.repository.produto.ProdutoRepository;
 import br.com.grandcharles.sgw.repository.usuario.UsuarioRepository;
-import br.com.grandcharles.sgw.service.pedido.CadastroPedidoService;
+import br.com.grandcharles.sgw.service.pedido.PedidoService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 import br.com.grandcharles.sgw.validation.SKU;
 
@@ -40,7 +40,7 @@ public class CadastroPedidoBean implements Serializable{
 	private ProdutoRepository produtoRepository;
 	
 	@Inject
-	private CadastroPedidoService pedidoService;
+	private PedidoService pedidoService;
 	
 	@Produces
 	@PedidoEdicao
@@ -58,10 +58,11 @@ public class CadastroPedidoBean implements Serializable{
 	}
 
 	public void inicializar(){
+		if (this.pedidoTO == null) {
+			limpar();
+		}	
+
 		if (FacesUtil.isNotPostback()){
-			//this.lstCliente = this.clienteRepository.buscaClientes();
-			//this.lstUsuario = this.usuarioRepository.buscaVendedores();
-			
 			this.pedidoTO.adicionarItemVazio();
 			
 			this.calcularTotalPedido();
@@ -116,13 +117,6 @@ public class CadastroPedidoBean implements Serializable{
 	}
 	
 
-	/*
-	public void totalPedido(){
-		this.pedidoTO.calculoTotalPedido();
-	}
-	*/
-
-	
 	public void calcularTotalPedido() {
 		if (this.pedidoTO != null) {
 			this.pedidoTO.calculoTotalPedido();

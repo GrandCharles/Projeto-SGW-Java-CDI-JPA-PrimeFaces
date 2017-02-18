@@ -9,6 +9,7 @@ import javax.inject.Named;
 import br.com.grandcharles.sgw.model.cliente.ClienteTO;
 import br.com.grandcharles.sgw.model.cliente.EnderecoTO;
 import br.com.grandcharles.sgw.repository.cliente.EnderecoRepository;
+import br.com.grandcharles.sgw.service.CepWebService;
 import br.com.grandcharles.sgw.service.cliente.ClienteService;
 import br.com.grandcharles.sgw.service.cliente.EnderecoService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
@@ -27,6 +28,7 @@ public class CadastroClienteBean implements Serializable{
 	@Inject
 	private EnderecoRepository enderecoRepository;
 
+	
 	private ClienteTO clienteTO;
 	
 	private EnderecoTO enderecoTO;
@@ -38,11 +40,23 @@ public class CadastroClienteBean implements Serializable{
 	
 
 	public void inicializar(){
+		if (this.clienteTO == null) {
+			limpar();
+		}			
+		
 		if (FacesUtil.isNotPostback()){
-			//prepararNovoEndereco();
+			prepararNovoEndereco();
 		}
 	}
+
+	private void limpar(){
+		this.clienteTO = new ClienteTO();
+		this.enderecoTO = new EnderecoTO();
+	}	
 	
+	public void prepararNovoEndereco() {
+		   this.enderecoTO = new EnderecoTO();
+	}
 	
 	public void salvar(){
 	    this.enderecoTO = new EnderecoTO();
@@ -53,17 +67,19 @@ public class CadastroClienteBean implements Serializable{
 		FacesUtil.addInfoMessage("Cliente salvo com sucesso");
 	}
 	
-	public void prepararNovoEndereco() {
-		   this.enderecoTO = new EnderecoTO();
-	}
 	
 	
 	public void salvarEndereco(){
+		boolean novo = isNovoEndereco();
+		
 		this.enderecoTO.setClienteTO(clienteTO);
 		this.enderecoTO = enderecoService.salvar(enderecoTO);
-		this.clienteTO.getLstEndereco().add(enderecoTO);
-		
-		FacesUtil.addInfoMessage("Endereço salvo com sucesso");
+		if (novo) {
+			this.clienteTO.getLstEndereco().add(enderecoTO);
+			FacesUtil.addInfoMessage("Endereço incluído com sucesso");
+		} else {
+			FacesUtil.addInfoMessage("Endereço alterado com sucesso");
+		}
 	}
 
 	public void excluirEndereco(){
@@ -73,14 +89,34 @@ public class CadastroClienteBean implements Serializable{
 		FacesUtil.addInfoMessage("Endereço " + enderecoTO.getLogradouro() + " excluído com sucesso!");
 	}
 	
-	private void limpar(){
-		this.clienteTO = new ClienteTO();
-		this.enderecoTO = new EnderecoTO();
+	
+	public void pesquisarCep(){
+		try {
+			CepWebService cws = new CepWebService(enderecoTO.getCep().replace("-", ""));
+			
+			 if (cws.getResultado() == 1) {
+				 enderecoTO.setTipoLogradouro(cws.getTipoLogradouro());
+				 enderecoTO.setLogradouro(cws.getLogradouro());
+				 enderecoTO.setUf(cws.getEstado());
+				 enderecoTO.setCidade(cws.getCidade());
+				 enderecoTO.setBairro(cws.getBairro());
+		        } else {
+					FacesUtil.addErrorMessage("CEp não encontrado!");
+		        }
+			 
+		} catch (Exception e) {
+
+			FacesUtil.addErrorMessage("Servidor não está respondendo!");
+		}		
+		
+	}
+	
+	
+	public boolean isNovoCliente() {
+		return this.clienteTO.getId() == null;
 	}	
-	
-	
-	public boolean isEditando() {
-		return this.clienteTO.getId() != null;
+	public boolean isNovoEndereco() {
+		return this.enderecoTO.getId() == null;
 	}	
 	
 	
@@ -99,6 +135,5 @@ public class CadastroClienteBean implements Serializable{
 		this.enderecoTO = enderecoTO;
 	}
 
-	
 	
 }

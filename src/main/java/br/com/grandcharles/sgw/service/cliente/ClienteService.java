@@ -26,6 +26,8 @@ public class ClienteService implements Serializable {
 		clienteTO.setDocCpfCnpj(clienteTO.getDocCpfCnpj().replace(".", "")
 				                                         .replace("/", "")
 				                                         .replace("-", ""));
+
+		
 		
 		return repository.salvar(clienteTO);
 	}

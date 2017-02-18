@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:o="http://omnifaces.org/ui">
 
-    <ui:define name="titulo">#{cadastroClienteBean.editando ? 'Edição de Cliente' : 'Novo Cliente'}</ui:define>
+    <ui:define name="titulo">#{cadastroClienteBean.novoCliente ? 'Novo Cliente' : 'Edição de Cliente'}</ui:define>
 
 	<ui:define name="corpo">
 		<f:metadata>
@@ -16,7 +16,7 @@
 	
 		<h:form id="idClienteForm">
 		
-	    	<h1>#{cadastroClienteBean.editando ? 'Edição de Cliente' : 'Novo Cliente'}</h1>
+	    	<h1>#{cadastroClienteBean.novoCliente ? 'Novo Cliente' : 'Edição de Cliente'}</h1>
 			
 			<h:panelGroup >
 
@@ -40,7 +40,7 @@
 						<p:commandButton id="idEndereco"
 						                 value="Incluir Endereço" 
 						                 title="Incluir um novo endereço"
-						                 disabled="#{not cadastroClienteBean.editando}"
+						                 disabled="#{cadastroClienteBean.novoCliente}"
 						                 action="#{cadastroClienteBean.prepararNovoEndereco}"
 						                 process="@this"
 						                 update=":idEnderecoForm:idEnderecoDialog"
@@ -51,9 +51,9 @@
 				
 				
 				<p:panelGrid columns="2" 
-	  				         style="width: 100%; margin-top: 20px" 
-	  				         columnClasses="rotulo, campo">
-				
+				             style="width: 100%; margin-top: 20px"
+		             		 styleClass="panelGrid" 
+				             columnClasses="rotulo, campo">
 				
 					<p:outputLabel value="Nome" for="idNome" />
 					<p:inputText id="idNome" 
@@ -94,31 +94,39 @@
 								 rowIndexVar="vLinha"
 					             value="#{cadastroClienteBean.clienteTO.lstEndereco}">
 
-			    		<p:column headerText="Logradouro" style="text-align: left; width: 40%">
+			    		<p:column headerText="Tp.Logradouro" style="text-align: left; width: 10%">
+			    			<h:outputText value="#{vItem.tipoLogradouro}"/>
+			    		</p:column>
+
+			    		<p:column headerText="Logradouro" style="text-align: left; width: 20%">
 			    			<h:outputText value="#{vItem.logradouro}"/>
 			    		</p:column>
 
-			    		<p:column headerText="Número" style="text-align: left; width: 10%">
+			    		<p:column headerText="Número" style="text-align: left; width: 7%">
 			    			<h:outputText value="#{vItem.numero}"/>
 			    		</p:column>
 
-			    		<p:column headerText="Complemento" style="text-align: left; width: 10%">
+			    		<p:column headerText="Bairro" style="text-align: left; width: 20%">
+			    			<h:outputText value="#{vItem.bairro}"/>
+			    		</p:column>
+
+			    		<p:column headerText="Complemento" style="text-align: left; width: 19%">
 			    			<h:outputText value="#{vItem.complemento}"/>
 			    		</p:column>
 
-			    		<p:column headerText="Cidade" style="text-align: left; width: 10%">
+			    		<p:column headerText="Cidade" style="text-align: left; width: 15%">
 			    			<h:outputText value="#{vItem.cidade}"/>
 			    		</p:column>
 
-			    		<p:column headerText="UF" style="text-align: left; width: 10%">
+			    		<p:column headerText="UF" style="text-align: left; width: 4%">
 			    			<h:outputText value="#{vItem.uf}"/>
 			    		</p:column>
 
-			    		<p:column headerText="CEP" style="text-align: left; width: 10%">
+			    		<p:column headerText="CEP" style="text-align: left; width: 7%">
 			    			<h:outputText value="#{vItem.cep}"/>
 			    		</p:column>
 			    		
-			    		<p:column style="text-align: center;  width: 10%">
+			    		<p:column style="text-align: center;  width: 8%">
 							<p:commandButton title="Editar"
 							                 icon="ui-icon-pencil"
 							                 process="@this"
@@ -175,44 +183,79 @@
 				      modal="true" 
 				      minimizable="false" 
 				      maximizable="false" 
-				      width="460"
-				      height="230">
+				      width="500"
+				      height="300">
 
 
-				<p:growl id="msgDialog" autoUpdate="true" />
+				<p:growl id="msgDialog"  autoUpdate="true"/>
 	
-				<p:focus for="idLogradouro" id="focus" />
+				<p:focus for="idCep" id="focus" />
 
-				<h:panelGrid columns="2" id="painelEndereco">
+				<h:panelGrid id="idPanelEnderecoCep"
+				             columns="3" 
+				             style="width: 74%; margin-top: 5px"
+				             styleClass="panelGrid"
+				             columnClasses="rotulo, campo, rotulo">
+				             
+					<p:outputLabel value="CEP: " for="idCep" />
+					<p:inputMask id="idCep"
+								 mask="99999-999"
+					             size="6" 
+					             required="true"
+					             value="#{cadastroClienteBean.enderecoTO.cep}"/>
+
+					<p:commandButton id="btnPesquisar" 
+									 label="Pesquisar CEP"
+					                 icon="ui-icon-search" 
+					                 action="#{cadastroClienteBean.pesquisarCep}" 
+					                 
+					                 process="@form"
+					                 update=":idEnderecoForm:idPanelEndereco"/>				
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2" id="idPanelEndereco">
+
+					<p:outputLabel value="Tipo de Logradouro" for="idTipoLogradouro" />
+					<p:inputText id="idTipoLogradouro"
+					             size="30"
+					             maxlength="20"
+						         value="#{cadastroClienteBean.enderecoTO.tipoLogradouro}" />
 
 					<p:outputLabel value="Logradouro" for="idLogradouro" />
 					<p:inputText id="idLogradouro"
 					             size="40"
+					             maxlength="40"
 						         value="#{cadastroClienteBean.enderecoTO.logradouro}" />
 
 					<p:outputLabel value="Numero" for="idNumero" />
 					<p:inputText id="idNumero"
 					             size="10"
-						         value="#{cadastroClienteBean.enderecoTO.numero}"/>
+					             maxlength="10"
+					             value="#{cadastroClienteBean.enderecoTO.numero}"/>
+
+					<p:outputLabel value="Bairro" for="idBairro" />
+					<p:inputText id="idBairro"
+					             size="40"
+					             maxlength="30"
+						         value="#{cadastroClienteBean.enderecoTO.bairro}"/>
 
 					<p:outputLabel value="Complemento" for="idComplemento" />
 					<p:inputText id="idComplemento"
 					             size="40"
+					             maxlength="40"
 						         value="#{cadastroClienteBean.enderecoTO.complemento}"/>
-
-					<p:outputLabel value="CEP" for="idCep" />
-					<p:inputText id="idCep"
-					             size="10" 
-					             value="#{cadastroClienteBean.enderecoTO.cep}"/>
 
 					<p:outputLabel value="Cidade" for="idCidade" />
 					<p:inputText id="idCidade"
 					             size="30" 
+					             maxlength="30"
 						         value="#{cadastroClienteBean.enderecoTO.cidade}" />
 
 					<p:outputLabel value="UF" for="idUF" />
 					<p:inputText id="idUF" 
-					             size="10"
+					             size="5"
+					             maxlength="2"
 					             value="#{cadastroClienteBean.enderecoTO.uf}"/>
 
 					<p:separator />
@@ -221,10 +264,10 @@
 					<p:commandButton value="Salvar"
 						             action="#{cadastroClienteBean.salvarEndereco}"
 						             process="@form"
-						             update=":idClienteForm:idView:idEnderecoTable :idEnderecoForm"/>
+						             update=":idClienteForm:idView:idEnderecoTable :idEnderecoForm:idPanelEndereco"/>
 
 					<p:button value="Fechar"
-						onclick="PF('DlgEndereco').hide();return false;" />
+						      onclick="PF('DlgEndereco').hide();return false;" />
 
 				</h:panelGrid>
 

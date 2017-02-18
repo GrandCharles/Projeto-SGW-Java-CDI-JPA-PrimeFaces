@@ -1,11 +1,18 @@
 package br.com.grandcharles.sgw.model.usuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -31,7 +38,9 @@ public class GrupoUsuarioTO implements Serializable{
 	@Column(name="strDescricao", length=40, nullable=false)
 	private String descricao;
 
-	
+	@ManyToMany(mappedBy="lstGrupoUsuario", cascade = CascadeType.ALL)
+	private List<UsuarioTO> lstUsuario = new ArrayList<>();
+	 
 	public Long getId() {
 		return id;
 	}
@@ -51,6 +60,13 @@ public class GrupoUsuarioTO implements Serializable{
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public List<UsuarioTO> getLstUsuario() {
+		return lstUsuario;
+	}
+	public void setLstUsuario(List<UsuarioTO> lstUsuario) {
+		this.lstUsuario = lstUsuario;
 	}
 	
 	

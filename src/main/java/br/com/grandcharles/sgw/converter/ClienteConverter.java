@@ -5,6 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.grandcharles.sgw.model.cliente.ClienteTO;
 import br.com.grandcharles.sgw.repository.cliente.ClienteRepository;
 import br.com.grandcharles.sgw.util.cdi.CDIServiceLocator;
@@ -23,7 +25,7 @@ public class ClienteConverter implements Converter{
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		ClienteTO retorno = null;
-		if (value != null){
+		if (StringUtils.isNotEmpty(value)) {
 			retorno= this.repository.porId(new Long(value)); 
 		}
 		return retorno;

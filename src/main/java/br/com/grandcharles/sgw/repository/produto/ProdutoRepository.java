@@ -1,22 +1,25 @@
 package br.com.grandcharles.sgw.repository.produto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import br.com.grandcharles.sgw.filter.ProdutoFilter;
-import br.com.grandcharles.sgw.model.cliente.ClienteTO;
+import br.com.grandcharles.sgw.model.produto.CategoriaTO;
 import br.com.grandcharles.sgw.model.produto.ProdutoTO;
 import br.com.grandcharles.sgw.service.NegocioException;
 import br.com.grandcharles.sgw.util.jpa.Transactional;
@@ -42,10 +45,14 @@ public class ProdutoRepository implements Serializable{
 		} 
 	}
 
+
+	
+	
+	
+	/* Descontinuado apos hibernate 5.3
 	@SuppressWarnings("unchecked")
 	public List<ProdutoTO> pesquisaFiltro(ProdutoFilter filtro){
-		/* Pilha hibernate*/
-		Session session = manager.unwrap(Session.class);
+		Session session = (Session) manager;
 		Criteria criteria = session.createCriteria(ProdutoTO.class);
 		
 		if (StringUtils.isNotBlank(filtro.getSku())){
@@ -57,6 +64,36 @@ public class ProdutoRepository implements Serializable{
 		}
 		return criteria.addOrder(Order.asc("descricao")).list();
 	}
+	*/
+	public List<ProdutoTO> pesquisaFiltro(ProdutoFilter filtro) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<ProdutoTO> criteriaQuery = builder.createQuery(ProdutoTO.class);
+		Root<ProdutoTO> produtoRoot = criteriaQuery.from(ProdutoTO.class);
+
+		
+		Fetch<ProdutoTO, CategoriaTO> categoriaJoin = produtoRoot.fetch("categoriaTO", JoinType.INNER);
+		categoriaJoin.fetch("categoriaPai", JoinType.INNER);
+
+		
+		List<Predicate> predicates = new ArrayList<>();
+		if (StringUtils.isNotBlank(filtro.getSku())) {
+			predicates.add(builder.equal(produtoRoot.get("sku"), filtro.getSku()));
+		}
+		if (StringUtils.isNotBlank(filtro.getDescricao())) {
+			predicates.add(builder.like(builder.lower(produtoRoot.get("strDescricao")), 
+					"%" + filtro.getDescricao().toLowerCase() + "%"));
+		}
+		criteriaQuery.select(produtoRoot);
+		criteriaQuery.where(predicates.toArray(new Predicate[0]));
+		criteriaQuery.orderBy(builder.asc(produtoRoot.get("descricao")));
+		
+
+		
+		//TypedQuery<ProdutoTO> query = manager.createQuery("select... ",resultClass);
+		TypedQuery<ProdutoTO> query = manager.createQuery(criteriaQuery);
+		return query.getResultList();
+	}
+	
 	
 	
 	public ProdutoTO existeSKU(String sku){
@@ -73,18 +110,17 @@ public class ProdutoRepository implements Serializable{
 		return manager.find(ProdutoTO.class, id);
 	}
 
-	@SuppressWarnings("unchecked")	
 	public List<ProdutoTO> pesquisaPorDescricao(String desc){
-		/*
-		return this.manager.createQuery("from ProdutoTO where upper(descricao) like :descricao",ProdutoTO.class)
-				.setParameter("descricao",descricao.toUpperCase() + "%")
-				.getResultList();
-		*/
-		Session session = manager.unwrap(Session.class);
-		Criteria criteria = session.createCriteria(ProdutoTO.class);
-		criteria.add(Restrictions.ilike("descricao",desc,MatchMode.ANYWHERE));
+		try {
+			return this.manager.createQuery("from ProdutoTO where upper(descricao) like :descricao",ProdutoTO.class)
+					.setParameter("descricao",desc.toUpperCase() + "%")
+					.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
 		
-		return criteria.addOrder(Order.asc("descricao")).list();
+		
+		
 	}	
 	
 	

@@ -58,16 +58,15 @@
 	    		
 	    		<p:column headerText="E-Mail" style="text-align: left; width: 20%">
 	    			<h:outputText value="#{vUsuario.email}"/>
+
 	    		</p:column>
 
-	    		<p:column headerText="Grupo" style="text-align: left; width: 20%">
-	    			<h:outputText value="#{vUsuario.lstGrupoUsuario}"/>
+	    		<p:column headerText="Grupo" style="text-align: left; width: 30%">
+					<ui:repeat value="#{vUsuario.lstGrupoUsuario}" var="vGrupo">
+				        <h:outputText value="#{vGrupo.nome} - #{vGrupo.descricao}" /><br/>
+				    </ui:repeat>
 	    		</p:column>
 
-	    		<p:column headerText="Senha" style="text-align: center; width: 10%">
-	    			<h:outputText value="#{vUsuario.senha}"/>
-	    		</p:column>
-	    		
 	    		<p:column style="text-align: center; width: 10% ">
 	    			<p:button icon="ui-icon-pencil" 
 	    			          title="Editar" 

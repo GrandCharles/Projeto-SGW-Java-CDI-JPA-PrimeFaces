@@ -39,15 +39,12 @@ public class CadastroProdutoBean implements Serializable{
 		limpar();
 	}
 	
-	
-	private void limpar(){
-		produtoTO = new ProdutoTO();
-		categoriaPai = null;
-		lstSubCategorias = new ArrayList<>();
-	}
-
-	
 	public void inicializar(){
+		if (this.produtoTO == null) {
+			limpar();
+		}	
+		
+		
 		if (FacesUtil.isNotPostback()){
 			lstCategoriasPai = repository.buscarCategoria();
 		}
@@ -56,6 +53,13 @@ public class CadastroProdutoBean implements Serializable{
 			carregarSubCategoria();
 		}
 	}
+
+	private void limpar(){
+		produtoTO = new ProdutoTO();
+		categoriaPai = null;
+		lstSubCategorias = new ArrayList<>();
+	}
+	
 	
 	public void carregarSubCategoria(){
 		lstSubCategorias = repository.buscarSubCategorias(categoriaPai);
@@ -71,8 +75,8 @@ public class CadastroProdutoBean implements Serializable{
 	}
 
 	
-	public boolean isEditando() {
-		return this.produtoTO.getId() != null;
+	public boolean isNovo() {
+		return this.produtoTO.getId() == null;
 	}
 	
 	

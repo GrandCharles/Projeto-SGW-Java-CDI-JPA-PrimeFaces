@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,6 +18,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
@@ -49,11 +51,10 @@ public class UsuarioTO implements Serializable{
 	@Column(name="strSenha", length=100, nullable=false)
 	private String senha;
 	
-	//@NotNull
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "dpUsuarioGrupo", 
-	           joinColumns = @JoinColumn(name="idUsuario"),
-			   inverseJoinColumns = @JoinColumn(name = "idGrupoUsuario"))
+	           joinColumns = {@JoinColumn(name="idUsuario")},
+			   inverseJoinColumns = {@JoinColumn(name = "idGrupoUsuario")})
 	private List<GrupoUsuarioTO> lstGrupoUsuario = new ArrayList<>();
 	
 	
@@ -100,22 +101,25 @@ public class UsuarioTO implements Serializable{
 		this.senha = senha;
 	}
 		
-	
 	public List<GrupoUsuarioTO> getLstGrupoUsuario() {
 		return lstGrupoUsuario;
 	}
 	public void setLstGrupoUsuario(List<GrupoUsuarioTO> lstGrupoUsuario) {
 		this.lstGrupoUsuario = lstGrupoUsuario;
 	}
-	
-	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((lstGrupoUsuario == null) ? 0 : lstGrupoUsuario.hashCode());
 		return result;
 	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -125,9 +129,19 @@ public class UsuarioTO implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		UsuarioTO other = (UsuarioTO) obj;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lstGrupoUsuario == null) {
+			if (other.lstGrupoUsuario != null)
+				return false;
+		} else if (!lstGrupoUsuario.equals(other.lstGrupoUsuario))
 			return false;
 		return true;
 	}
+
+
 	
 }

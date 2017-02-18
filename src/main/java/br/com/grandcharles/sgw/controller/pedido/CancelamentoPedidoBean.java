@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.grandcharles.sgw.model.pedido.PedidoTO;
-import br.com.grandcharles.sgw.service.pedido.CancelamentoPedidoService;
+import br.com.grandcharles.sgw.service.pedido.PedidoService;
 import br.com.grandcharles.sgw.util.jsf.FacesUtil;
 
 @Named
@@ -17,7 +17,7 @@ public class CancelamentoPedidoBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private CancelamentoPedidoService service;
+	private PedidoService service;
 	
 	@Inject
 	private Event<PedidoEvent> event;

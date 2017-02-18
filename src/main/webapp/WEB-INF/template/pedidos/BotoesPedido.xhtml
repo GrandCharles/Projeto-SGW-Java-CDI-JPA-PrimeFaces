@@ -17,13 +17,15 @@
 
 		<p:toolbarGroup align="right">
 			<p:commandButton value="Emitir"
-						     disabled="#{not cadastroPedidoBean.pedidoTO.pedidoEmissivel}"
+						     disabled="#{not cadastroPedidoBean.pedidoTO.pedidoEmissivel
+						                 or not usuarioLogado.emitirPedidoPermitido}"
 			                 action="#{emissaoPedidoBean.emitirPedido}"
 			                 process="@form" 
 			                 update="@form"/>
 			
 			<p:commandButton value="Cancelar"
-							 disabled="#{not cadastroPedidoBean.pedidoTO.pedidoCancelavel}"
+							 disabled="#{not cadastroPedidoBean.pedidoTO.pedidoCancelavel
+							             or not usuarioLogado.cancelarPedidoPermitido}"
 							 action="#{cancelamentoPedidoBean.cancelarPedido}"
 			                 process="@this" 
 			                 update="@form"/>

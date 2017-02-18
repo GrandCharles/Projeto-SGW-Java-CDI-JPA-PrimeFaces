@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import br.com.grandcharles.sgw.model.cliente.EnderecoTO;
 import br.com.grandcharles.sgw.repository.cliente.EnderecoRepository;
-import br.com.grandcharles.sgw.service.NegocioException;
 import br.com.grandcharles.sgw.util.jpa.Transactional;
 
 public class EnderecoService implements Serializable{
@@ -18,7 +17,8 @@ public class EnderecoService implements Serializable{
 	
 	@Transactional
 	public EnderecoTO salvar(EnderecoTO enderecoTO){
-
+		enderecoTO.setCep(enderecoTO.getCep().replace("-", ""));
+		
 		return repository.salvar(enderecoTO);
 	}	
 }

@@ -1,24 +1,36 @@
 package br.com.grandcharles.sgw.repository.pedido;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-//import javax.persistence.PersistenceException;
+import javax.persistence.PersistenceException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.Type;
 
-//import br.com.grandcharles.sgw.service.NegocioException;
-//import br.com.grandcharles.sgw.util.jpa.Transactional;
 
 import br.com.grandcharles.sgw.filter.PedidoFilter;
 import br.com.grandcharles.sgw.model.pedido.PedidoTO;
+import br.com.grandcharles.sgw.model.usuario.UsuarioTO;
+import br.com.grandcharles.sgw.model.pedido.DataValorTO;
+import br.com.grandcharles.sgw.service.NegocioException;
+import br.com.grandcharles.sgw.util.jpa.Transactional;
 
 public class PedidoRepository implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,9 +43,8 @@ public class PedidoRepository implements Serializable {
 		return manager.merge(pedidoTO);
 	}
 	
-	/*
-	@Transactional
-	public void remover(PedidoTO pedidoTO){
+	
+	public void excluir(PedidoTO pedidoTO){
 		try {
 			pedidoTO = porId(pedidoTO.getId());
 			manager.remove(pedidoTO);
@@ -42,11 +53,12 @@ public class PedidoRepository implements Serializable {
 			throw new NegocioException("Pedido não pode ser excluído!");
 		} 
 	}
-	*/
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<PedidoTO> pesquisaFiltro(PedidoFilter filtro){
-		Session session = manager.unwrap(Session.class);
+		//Session session = manager.unwrap(Session.class);
+		Session session = (Session) manager;
 		
 		Criteria criteria = session.createCriteria(PedidoTO.class)
 				// fazemos uma associação (join) com cliente e nomeamos como "c"
@@ -88,22 +100,62 @@ public class PedidoRepository implements Serializable {
 		return criteria.addOrder(Order.asc("id")).list();
 	}
 	
-	
-	/*
-	public UsuarioTO existeNome(String nome){
-		try {
-		return manager.createQuery("from UsuarioTO where upper(nome)=:valor",UsuarioTO.class)
-				.setParameter("valor", nome.toUpperCase()).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-	
-
-	*/
 
 	public PedidoTO porId(Long id){
 		return manager.find(PedidoTO.class, id);
+	}
+
+	
+	@SuppressWarnings({ "unchecked" })
+	public Map<Date, BigDecimal> valoresTotaisPorData(Integer numeroDeDias, UsuarioTO criadoPor) {
+		//Session session = manager.unwrap(Session.class);
+		Session session = (Session) manager;
+		
+		numeroDeDias -= 1;
+		
+		Calendar dataInicial = Calendar.getInstance();
+		dataInicial = DateUtils.truncate(dataInicial, Calendar.DAY_OF_MONTH);
+		dataInicial.add(Calendar.DAY_OF_MONTH, numeroDeDias * -1);
+		
+		Map<Date, BigDecimal> resultado = criarMapaVazio(numeroDeDias, dataInicial);
+		
+		Criteria criteria = session.createCriteria(PedidoTO.class);
+		
+		criteria.setProjection(Projections.projectionList()
+				.add(Projections.sqlGroupProjection("date(dtDataCriacao) as data", 
+						                            "date(dtDataCriacao)", new String[] { "data" }, 
+						new Type[] { StandardBasicTypes.DATE } ))
+				.add(Projections.sum("vlrTotal").as("valor"))
+			)
+			.add(Restrictions.ge("dtCriacao", dataInicial.getTime()));
+		
+		if (criadoPor != null) {
+			criteria.add(Restrictions.eq("usuarioTO", criadoPor));
+		}
+		
+		List<DataValorTO> valoresPorData = criteria
+				.setResultTransformer(Transformers.aliasToBean(DataValorTO.class)).list();
+		
+		for (DataValorTO dataValor : valoresPorData) {
+			resultado.put(dataValor.getData(), dataValor.getValor());
+		}
+		
+		return resultado;
+	}
+
+
+
+	private Map<Date, BigDecimal> criarMapaVazio(Integer numeroDeDias, Calendar dataInicial) {
+		dataInicial = (Calendar) dataInicial.clone();
+		
+		Map<Date, BigDecimal> mapaInicial = new TreeMap<>();
+
+		for (int i = 0; i <= numeroDeDias; i++) {
+			mapaInicial.put(dataInicial.getTime(), BigDecimal.ZERO);
+			dataInicial.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		return mapaInicial;
 	}
 
 }

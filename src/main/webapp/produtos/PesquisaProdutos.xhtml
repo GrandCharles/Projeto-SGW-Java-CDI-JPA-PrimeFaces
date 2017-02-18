@@ -8,6 +8,7 @@
     <ui:define name="titulo">Pesquisa de produtos</ui:define>
     
     <ui:define name="corpo">
+    
     	<h:form id="idForm">
 	    	<h1>Pesquisa de produtos</h1>
 	    	
@@ -18,11 +19,11 @@
 	    			<p:commandButton value="Pesquisar" 
 	    			                 action="#{pesquisaProdutosBean.pesquisarFiltro}"
 	    			                 update="@form"/>
-	    		</p:toolbarGroup>
-	    		
-	    		<p:toolbarGroup align="right">
+					<p:separator/>
+
 	    			<p:button value="Novo" outcome="/produtos/CadastroProduto" />
 	    		</p:toolbarGroup>
+	    		
 	    	</p:toolbar>
 	    	
 	    	<p:panelGrid columns="2" id="painel" 

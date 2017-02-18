@@ -14,8 +14,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import br.com.grandcharles.sgw.model.pedido.PedidoTO;
-
 @Entity
 @Table(name="tbEndereco")
 public class EnderecoTO implements Serializable {
@@ -27,15 +25,35 @@ public class EnderecoTO implements Serializable {
 	private Long id;
 
 	@NotBlank
+	@Size(max=9)
+	@Column(name="strCep", length=9, nullable=false)
+	private String cep;
+
+
+	@NotBlank
+	@Size(max=20)
+	@Column(name="strtTipoLogradouro", length=20, nullable=false )
+	private String tipoLogradouro;
+
+	
+	@NotBlank
 	@Size(max=40)
 	@Column(name="strLogradouro", length=40, nullable=false )
 	private String logradouro;
 
+	
 	@NotBlank
 	@Size(max=10)
 	@Column(name="strNumero", length=10)
 	private String numero;
 
+	
+	@NotBlank
+	@Size(max=30)
+	@Column(name="strBairro", length=30, nullable=false)
+	private String bairro;
+	
+	
 	@Size(max=40)
 	@Column(name="strComplemento", length=40)
 	private String complemento;
@@ -50,11 +68,6 @@ public class EnderecoTO implements Serializable {
 	@Column(name="strUf", length=10, nullable=false)
 	private String uf;
 
-	@NotBlank
-	@Size(max=8)
-	@Column(name="strCep", length=8, nullable=false)
-	private String cep;
-	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="idCliente", nullable=false)
@@ -119,6 +132,21 @@ public class EnderecoTO implements Serializable {
 
 	
 	
+	public String getTipoLogradouro() {
+		return tipoLogradouro;
+	}
+	public void setTipoLogradouro(String tipoLogradouro) {
+		this.tipoLogradouro = tipoLogradouro;
+	}
+	
+	public String getBairro() {
+		return bairro;
+	}
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -142,7 +170,4 @@ public class EnderecoTO implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
 }

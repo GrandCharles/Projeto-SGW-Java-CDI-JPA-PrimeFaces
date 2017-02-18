@@ -35,7 +35,7 @@
 			
 			<div style="float: right; margin-right: 110px">
 				<span style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
-					Olá #{usuarioLogado.nomeUsuario}
+					Olá #{security.nomeUsuario}
 				</span>
 				
 				<h:form style="display: inline-block">
@@ -44,16 +44,18 @@
 					
 						<p:submenu label="Cadastros">
 							<p:menuitem value="Grupo de Usuários" outcome="/usuarios/PesquisaGrupoUsuario" />
-							<p:menuitem value="Usuários" outcome="/usuarios/PesquisaUsuario" />
+							<p:menuitem value="Usuários"          outcome="/usuarios/PesquisaUsuario" />
+							<p:separator/>
 							<p:menuitem value="Clientes" outcome="/clientes/PesquisaCliente"/>
 							<p:separator/>
-							<p:menuitem value="Categorias" />
+							<p:menuitem value="Categorias de Produtos" />
 							<p:menuitem value="Produtos" outcome="/produtos/PesquisaProdutos" />
 						</p:submenu>
 						
 						<p:submenu label="Pedidos">
-							<p:menuitem value="Novo pedido" outcome="/pedidos/CadastroPedido"  />
-							<p:menuitem value="Pesquisa"  outcome="/pedidos/PesquisaPedido"/>
+							<p:menuitem value="Novo pedido"  outcome="/pedidos/CadastroPedido"  />
+							<p:menuitem value="Pesquisa"     outcome="/pedidos/PesquisaPedido"/>
+							<p:menuitem value="Estatística"  outcome="/pedidos/EstatisticaPedido"/>
 						</p:submenu>
 						
 						<p:submenu label="#{msg.menuSistema}" >

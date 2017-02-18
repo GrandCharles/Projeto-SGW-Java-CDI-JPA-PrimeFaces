@@ -5,6 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.grandcharles.sgw.model.usuario.GrupoUsuarioTO;
 import br.com.grandcharles.sgw.repository.usuario.GrupoUsuarioRepository;
 import br.com.grandcharles.sgw.util.cdi.CDIServiceLocator;
@@ -23,7 +25,7 @@ public class GrupoUsuarioConverter implements Converter{
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		GrupoUsuarioTO retorno = null;
-		if (value != null){
+		if (StringUtils.isNotEmpty(value)) {
 			Long id = new Long(value);
 			retorno= repository.porId(id); 
 		}

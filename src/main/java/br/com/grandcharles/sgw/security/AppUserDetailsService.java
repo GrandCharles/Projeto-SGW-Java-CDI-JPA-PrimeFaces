@@ -37,7 +37,7 @@ public class AppUserDetailsService implements UserDetailsService {
 	private Collection<? extends GrantedAuthority> getLstGrupoUsuario(UsuarioTO usuarioTO) {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		
-		for (GrupoUsuarioTO lstGrupoUsuario : usuarioTO.getLstGrupoUsuario() ){
+		for (GrupoUsuarioTO lstGrupoUsuario : usuarioTO.getLstGrupoUsuario()){
 			authorities.add(new SimpleGrantedAuthority("ROLE_" + lstGrupoUsuario.getNome().toUpperCase()));
 			
 		}

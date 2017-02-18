@@ -1,3 +1,5 @@
+
+
 package br.com.grandcharles.sgw.controller.usuario;
 
 import java.io.Serializable;
@@ -7,7 +9,6 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -28,7 +29,6 @@ public class CadastroUsuarioBean implements Serializable{
 	@Inject
 	private UsuarioService service; 
 	
-	@NotNull
 	private GrupoUsuarioTO grupoUsuarioTO;
 
 	private UsuarioTO usuarioTO;
@@ -42,12 +42,20 @@ public class CadastroUsuarioBean implements Serializable{
 	
 	
 	public void inicializar(){
+		if (this.usuarioTO == null) {
+			limpar();
+		}	
+		
 		if (FacesUtil.isNotPostback()){
-			lstGrupoUsuario = repository.buscarGrupoUsuario();
+			this.lstGrupoUsuario = repository.buscarGrupoUsuario();
 		}
-
 	}
 	
+	private void limpar(){
+		usuarioTO = new UsuarioTO();
+		grupoUsuarioTO = null;
+		lstGrupoUsuario = new ArrayList<>();
+	}
 
 	
 	public void salvar() {
@@ -55,7 +63,11 @@ public class CadastroUsuarioBean implements Serializable{
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();	
 		String hashedPassword = passwordEncoder.encode(password);
 		this.usuarioTO.setSenha(hashedPassword);
-		
+
+		if (isNovo()) {
+			this.grupoUsuarioTO.getLstUsuario().add(this.usuarioTO); 
+			this.usuarioTO.getLstGrupoUsuario().add(this.grupoUsuarioTO); 
+		}
 		this.usuarioTO = service.salvar(usuarioTO);
 		
 		//limpar();
@@ -64,15 +76,10 @@ public class CadastroUsuarioBean implements Serializable{
 	}
 
 
-	private void limpar(){
-		usuarioTO = new UsuarioTO();
-		grupoUsuarioTO = null;
-		lstGrupoUsuario = new ArrayList<>();
-	}
 
 	
-	public boolean isEditando() {
-		return this.usuarioTO.getId() != null;
+	public boolean isNovo() {
+		return this.usuarioTO.getId() == null;
 	}
 	
 	

@@ -25,10 +25,16 @@ public class CadastroGrupoUsuarioBean implements Serializable{
 		limpar();
 	}
 	
-
+	public void inicializar(){
+		if (this.grupoUsuarioTO == null) {
+			limpar();
+		}	
+	}
+	
 	private void limpar(){
 		grupoUsuarioTO = new GrupoUsuarioTO();
 	}
+
 
 	
 	public void salvar() {
@@ -38,8 +44,8 @@ public class CadastroGrupoUsuarioBean implements Serializable{
 	}
 
 
-	public boolean isEditando() {
-		return this.grupoUsuarioTO.getId() != null;
+	public boolean isNovo() {
+		return this.grupoUsuarioTO.getId() == null;
 	}
 	
 	

@@ -6,17 +6,17 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:o="http://omnifaces.org/ui">
 
-    <ui:define name="titulo">#{cadastroGrupoUsuarioBean.editando ? 'Edição de Grupos de Usuário' : 'Novo Grupo de Usuário'}</ui:define>
+    <ui:define name="titulo">#{cadastroGrupoUsuarioBean.novo ? 'Novo Grupo de Usuário' : 'Edição de Grupo de Usuário'}</ui:define>
  
 	<ui:define name="corpo">
 		<!-- Antes da pagina ser reinderizada chame o método -->
 		<f:metadata>
 			<o:viewParam name="nGrupoUsuario" value="#{cadastroGrupoUsuarioBean.grupoUsuarioTO}"/> 
-			<!-- <f:event listener="#{cadastroGrupoUsuarioBean.inicializar}" type="preRenderView" /> -->
+			<f:event listener="#{cadastroGrupoUsuarioBean.inicializar}" type="preRenderView" />
 		</f:metadata>
 	
 		<h:form>
-	    	<h1>#{cadastroGrupoUsuarioBean.editando ? 'Edição de Grupo de Usuário' : 'Novo Grupo Usuário'}</h1>
+	    	<h1>#{cadastroGrupoUsuarioBean.novo ? 'Novo Grupo de Usuário' : 'Edição de Grupo de Usuário'}</h1>
 			
 			<p:growl id="msgDialog" autoUpdate="true" />
 

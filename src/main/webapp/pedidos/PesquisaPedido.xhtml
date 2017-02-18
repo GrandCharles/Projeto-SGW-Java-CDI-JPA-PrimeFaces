@@ -8,8 +8,11 @@
     <ui:define name="titulo">Pesquisa de pedidos</ui:define>
     
     <ui:define name="corpo">
-    	<h:form>
+    
+    	<h:form id="idForm">
 	    	<h1>Pesquisa de pedidos</h1>
+
+			<p:growl id="msgDialog" autoUpdate="true" />
 	    	
 	    	<p:toolbar style="margin-top: 20px">
 	    		<p:toolbarGroup>
@@ -22,8 +25,7 @@
 	    		</p:toolbarGroup>
 	    	</p:toolbar>
 	    	
-	    	<p:panelGrid id="painel"
-	    	             columns="2" 
+	    	<p:panelGrid columns="2" 
 	    	             style="width: 100%; 
 	    	             margin-top: 20px"
 	    			     columnClasses="rotulo, campo">
@@ -74,7 +76,7 @@
 	    		</p:selectManyCheckbox>
 	    	</p:panelGrid>
 	    	
-	    	<p:dataTable id="IdPedidoTable" 
+	    	<p:dataTable id="idPedidoTable" 
 	    			 	 value="#{pesquisaPedidoBean.lstPedidoFiltrado}" 
 	    			 	 var="vPedido"
 	    		         style="margin-top: 20px" 
@@ -94,7 +96,7 @@
 	    			</h:outputText>
 	    		</p:column>
 
-	    		<p:column headerText="Cliente" style="text-align: left; width: 28%">
+	    		<p:column headerText="Cliente" style="text-align: left; width: 24%">
 	    			<h:outputText value="#{vPedido.clienteTO.nome}"/>
 	    		</p:column>
 	    		
@@ -117,17 +119,43 @@
 	    			<h:outputText value="#{vPedido.statusPedido.descricao}"/>
 	    		</p:column>
 	    		
-	    		<p:column style="width: 4%; text-align: center">
+	    		<p:column style="text-align: center; width: 8%">
 	    			<p:button icon="ui-icon-pencil" 
 	    			          title="Editar" 
 	    			          outcome="/pedidos/CadastroPedido">
 	    				<f:param name="nPedido" value="#{vPedido.id}"/>          
 	    			</p:button>
-	    		</p:column>
 
+					<p:commandButton icon="ui-icon-trash" 
+					                 title="Excluir" 
+					                 process="@this"
+					                 update=":idForm:idDialog"
+					                 oncomplete="PF('confirmacaoExclusao').show()">
+						<f:setPropertyActionListener target="#{pesquisaPedidoBean.pedidoTO}" 
+						                             value="#{vPedido}" />
+
+					 </p:commandButton>
+
+	    		</p:column>
     	    		
 	    	</p:dataTable>
+
+			<p:confirmDialog id="idDialog" 
+			                 header="Exclusão de pedido" 
+			                 message="Tem certeza que deseja excluir o pedido #{pesquisaPedidoBean.pedidoTO.id}?"
+	    		             widgetVar="confirmacaoExclusao">
+	    		             
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    		
+	    		<p:commandButton value="Sim" 
+	    		                 oncomplete="PF('confirmacaoExclusao').hide();" 
+	    		                 action="#{pesquisaPedidoBean.excluir}"
+	    		                 process="@this"
+	    		                 update=":idForm:idPedidoTable" />
+	    	</p:confirmDialog>
 	    	
     	</h:form>
+    	
     </ui:define>
+    
 </ui:composition>

@@ -5,6 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.grandcharles.sgw.model.pedido.PedidoTO;
 import br.com.grandcharles.sgw.repository.pedido.PedidoRepository;
 import br.com.grandcharles.sgw.util.cdi.CDIServiceLocator;
@@ -23,7 +25,8 @@ public class PedidoConverter implements Converter{
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		PedidoTO retorno = null;
-		if (value != null){
+	
+		if (StringUtils.isNotEmpty(value)) {
 			Long id = new Long(value);
 			retorno= this.repository.porId(id); 
 		}

@@ -36,10 +36,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			
 		.authorizeRequests()
-			.antMatchers("/Login.xhtml", "/Erro.xhtml", "/javax.faces.resource/**").permitAll()
-			.antMatchers("/Home.xhtml", "/AcessoNegado.xhtml", "/dialogos/**").authenticated()
-			.antMatchers("/pedidos/**").hasAnyRole("VENDEDORES", "AUXILIARES", "ADMINISTRADORES")
-			.antMatchers("/clientes/**", "/produtos/**", "/usuarios/**", "/relatorios/**").hasRole("ADMINISTRADORES")
+			.antMatchers("/Login.xhtml", 
+					     "/Erro.xhtml", 
+					     "/javax.faces.resource/**").permitAll()
+			
+			.antMatchers("/Home.xhtml", 
+					     "/AcessoNegado.xhtml", 
+					     "/dialogos/**").authenticated()
+			
+			.antMatchers("/pedidos/**").hasAnyRole("ADMINISTRADORES",
+					                               "AUXILIARES",
+					                               "VENDEDORES") 
+					                              
+			.antMatchers("/categorias/**",
+					     "/clientes/**", 
+					     "/produtos/**", 
+					     "/usuarios/**", 
+					     "/relatorios/**").hasRole("ADMINISTRADORES")
 			.and()
 		
 		.formLogin()
